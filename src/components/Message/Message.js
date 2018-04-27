@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 
 const Welcome = props => {
     return (
@@ -15,6 +16,9 @@ const Welcome = props => {
         </article>
     )
 }
+Welcome.propTypes = {
+    handleClick: PropTypes.func.isRequired
+}
 
 const Summary = props => {
     return (
@@ -29,6 +33,9 @@ const Summary = props => {
             </div>
         </article>
     )
+}
+Summary.propTypes = {
+    handleClick: PropTypes.func.isRequired
 }
 
 class Message extends React.Component {
@@ -61,6 +68,10 @@ class Message extends React.Component {
             return <Summary handleClick={this.restartGame} />
         }
     }
+}
+Message.propTypes = {
+    gameState: PropTypes.string.isRequired,
+    handleUserSelection: PropTypes.func.isRequired
 }
 
 export default Message

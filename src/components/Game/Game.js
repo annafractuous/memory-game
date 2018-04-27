@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import Timer from '../Timer/Timer'
 import Cards from '../Cards/Cards'
 
@@ -13,6 +14,9 @@ const GameDisplay = props => {
 	} else {
 		return 'Loading...'
 	}
+}
+GameDisplay.propTypes = {
+    readyState: PropTypes.string.isRequired
 }
 
 class Game extends React.Component {
@@ -65,6 +69,10 @@ class Game extends React.Component {
 			</div>
 		)
 	}
+}
+Game.propTypes = {
+    difficulty: PropTypes.string.isRequired,
+    completeGame: PropTypes.func.isRequired
 }
 
 export default Game

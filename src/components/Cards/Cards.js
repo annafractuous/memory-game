@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import Card from '../Card/Card'
 
 class Cards extends React.Component {
@@ -80,6 +81,10 @@ class Cards extends React.Component {
 			</div>
 		)
 	}
+}
+Cards.propTypes = {
+    cards: PropTypes.array.isRequired,
+    completeGame: PropTypes.func.isRequired
 }
 
 export default Cards
