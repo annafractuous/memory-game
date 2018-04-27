@@ -1,11 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
+const Title = () => {
+    return (
+        <header>
+            <h1>Memory</h1>
+            <h4>An unforgettable classic</h4>
+        </header>
+    )
+}
+
 const Welcome = props => {
     return (
         <article>
-            <h1>Memory</h1>
-            <h4>The game you won't soon forget</h4>
+            <Title />
             <div>
                 <p>Select your difficulty level.</p>
                 <div>
@@ -23,12 +31,11 @@ Welcome.propTypes = {
 const Summary = props => {
     return (
         <article>
-            <h1>Memory</h1>
-            <h4>The game you won't soon forget</h4>
+            <Title />
             <div>
-                <p>Done! Want to play again?</p>
+                <p>Done!</p>
                 <div>
-                    <button onClick={props.handleClick}>Yes</button>
+                    <button onClick={props.handleClick}>Play Again</button>
                 </div>
             </div>
         </article>
