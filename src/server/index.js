@@ -3,7 +3,7 @@ import compression from 'compression'
 import path from 'path'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
-import App from '../components/App'
+import App from '../components/App/App'
 import template from './template'
 
 const clientAssets = require(KYT.ASSETS_MANIFEST) // eslint-disable-line import/no-dynamic-require
