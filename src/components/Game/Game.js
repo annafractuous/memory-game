@@ -1,12 +1,13 @@
 import React from 'react'
 import Timer from '../Timer/Timer'
+import Cards from '../Cards/Cards'
 
 import styles from './Game.scss'
 
 const GameDisplay = props => {
 	if (props.readyState === 'true') {
-        const cardCount = props.cards[props.difficulty].length
-		return <div>The cards have fallen. All {cardCount} of them!</div>
+		const completeGame = () => props.completeGame()
+		return <Cards cards={props.cards[props.difficulty]} completeGame={completeGame} />
 	} else if (props.readyState === 'error') {
 		return "We've encountered an error. Please try again later!"
 	} else {
@@ -58,7 +59,7 @@ class Game extends React.Component {
 	render() {
 		return (
 			<div>
-				<h1 className={styles.header}>Memory</h1>
+				<h1 className={styles.header}>NYT Games Code Test</h1>
 				<Timer />
 				<GameDisplay readyState={this.state.cardsLoaded} cards={this.state.cards} difficulty={this.props.difficulty} completeGame={this.completeGame} />
 			</div>
