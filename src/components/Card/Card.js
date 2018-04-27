@@ -4,8 +4,7 @@ class Card extends React.Component {
     constructor(props) {
         super(props)
 		this.state = {
-			flipped: false,
-            active: true
+			flipped: false
 		}
 
 		this.handleClick = this.handleClick.bind(this)
@@ -19,7 +18,7 @@ class Card extends React.Component {
 		let cardClass = ''
 		cardClass += 'card-container'
 		cardClass += this.state.flipped ? ' flipped' : ''
-		cardClass += this.state.active ? ' active' : ''
+		cardClass += this.props.active ? ' active' : ''
 		
 		return (
 			<div className={cardClass} data-value={this.props.value} onClick={this.handleClick}>

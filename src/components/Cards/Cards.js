@@ -38,14 +38,44 @@ class Cards extends React.Component {
 
 	handleClick(e) {
 		const value = e.currentTarget.dataset.value
-        console.log(value)
+		
+		if (this.state.pairingCard === null) {
+			this.setState({
+				pairingCard: value
+			})
+		} else {
+			this.checkMatch(value)
+		}
+	}
+
+	checkMatch(value) {
+		if (this.state.pairingCard === value) {
+			this.setState({
+				pairingCard: null,
+				pairsMade: [...this.state.pairsMade, value],
+				pairsRemaining: this.state.pairsRemaining - 1,
+				moves: this.state.moves + 1
+			}, this.checkForWin)
+		} else {
+			this.setState({
+				pairingCard: null,
+				moves: this.state.moves + 1
+			})
+		}
+	}
+
+    checkForWin() {
+        if (!this.state.pairsRemaining) {
+            this.props.completeGame()
+        }
     }
 
 	render() {
 		return (
 			<div>
 				{this.props.cards.map((card, i) => {
-					return <Card value={card} handleClick={this.handleClick} key={i} />
+					const active = this.state.pairsMade.includes(card)
+					return <Card value={card} active={active} handleClick={this.handleClick} key={i} />
 				}, this)}
 			</div>
 		)
