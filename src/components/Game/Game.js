@@ -5,15 +5,28 @@ import Cards from '../Cards/Cards'
 
 import styles from './Game.scss'
 
+const GamePlay = props => {
+    const completeGame = (moves) => props.completeGame(moves)
+    return (
+        <div>
+            <Timer />
+            <Cards cards={props.cards} completeGame={completeGame} />
+        </div>
+    )
+}
+GamePlay.propTypes = {
+    cards: PropTypes.array.isRequired,
+    completeGame: PropTypes.func.isRequired
+}
+
 const GameDisplay = props => {
-	if (props.readyState === 'true') {
-		const completeGame = (moves) => props.completeGame(moves)
-		return <Cards cards={props.cards[props.difficulty]} completeGame={completeGame} />
-	} else if (props.readyState === 'error') {
-		return "We've encountered an error. Please try again later!"
-	} else {
-		return 'Loading...'
-	}
+    switch (props.readyState) {
+        case 'false':
+	    	return 'Loading...'
+        case 'error':
+        default:
+		    return "We've encountered an error. Please try again later!"
+    }
 }
 GameDisplay.propTypes = {
     readyState: PropTypes.string.isRequired
@@ -59,13 +72,20 @@ class Game extends React.Component {
 	}
 
 	render() {
-		return (
-			<div>
-				<h1 className={styles.header}>NYT Games Code Test</h1>
-				<Timer />
-				<GameDisplay readyState={this.state.cardsLoaded} cards={this.state.cards} difficulty={this.props.difficulty} completeGame={(moves) => this.completeGame(moves)} />
-			</div>
-		)
+        if (this.state.cardsLoaded === 'true') {
+            const cardSet = this.state.cards[this.props.difficulty]
+            return (
+                <GamePlay 
+                    cards={cardSet} 
+                    completeGame={(moves) => this.completeGame(moves)} 
+                />
+            )
+        }
+        else {
+            return (
+                <GameDisplay readyState={this.state.cardsLoaded} />
+            )
+        }
 	}
 }
 Game.propTypes = {
