@@ -1,0 +1,65 @@
+/**********
+*  Cards  *
+***********/
+.cardsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 20px;
+}
+
+/*********
+*  Card  *
+**********/
+.cardContainer,
+.front,
+.back {
+    width: calc(25vw - 25px);
+    height: calc(25vw - 25px);
+}
+
+.cardContainer {
+	perspective: 1000px;
+    margin: 0 20px 20px 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 300ms ease 500ms;
+
+    &.active {
+		opacity: 1;
+        pointer-events: all;
+    }
+}
+
+.card {
+	position: relative;
+	transition: 600ms;
+	transform-style: preserve-3d;
+
+    .flipped & {
+		transform: rotateY(180deg); 
+    }
+}
+
+.front,
+.back {
+	position: absolute;
+	top: 0;
+	left: 0;
+	backface-visibility: hidden;
+}
+
+.front {
+	transform: rotateY(180deg);
+    font-size: 32px;
+    line-height: calc(25vw - 25px);
+    text-align: center;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.back {
+	z-index: 2;
+	transform: rotateY(0deg);
+    background-color: green;
+    cursor: pointer;
+}

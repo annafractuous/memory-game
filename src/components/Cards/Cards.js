@@ -1,32 +1,35 @@
 import React from 'react'
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
+import classNames from 'classnames'
+
+import styles from './Cards.scss'
 
 class Card extends React.Component {
     constructor(props) {
         super(props)
-		this.state = {
-			flipped: false
-		}
 
 		this.handleClick = this.handleClick.bind(this)
     }
 
-	handleClick(e) {
-		this.props.handleClick(e)
+	handleClick() {
+		this.props.handleClick(this.props.value, this.props.idx)
 	}
 
 	render() {
-		let cardClass = ''
-		cardClass += 'card-container'
-		cardClass += this.state.flipped ? ' flipped' : ''
-		cardClass += this.props.active ? ' active' : ''
-		
+		const cardClass = classNames([styles.cardContainer], {
+            [styles.active]: this.props.active,
+            [styles.flipped]: this.props.flipped
+        })
+
 		return (
-			<div className={cardClass} data-value={this.props.value} onClick={this.handleClick}>
-				<div className='card'>
-					{this.props.value}
-				</div>
-			</div>
+			<div className={cardClass} aria-label={this.props.value} onClick={this.handleClick}>
+                <div className={styles.card}>
+                    <div className={styles.front}>
+                        {this.props.value}
+                    </div>
+                    <div className={styles.back}></div>
+                </div>
+            </div>
 		)
 	}
 }
@@ -41,7 +44,7 @@ class Cards extends React.Component {
         super(props)
 		this.state = {
             firstCard: true,
-			pairingCard: null,
+			pairingCards: [],
 			pairsMade: [],
 			pairsRemaining: this.props.cards.length / 2,
 			moves: 0
@@ -51,10 +54,6 @@ class Cards extends React.Component {
 		this.handleClick = this.handleClick.bind(this)
     }
 
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	return nextState.pairingCard === null
-	// }
-
 	shuffleCards() {
 		// Fisher-Yates shuffle
 		const cards = this.props.cards
@@ -62,9 +61,9 @@ class Cards extends React.Component {
 		let temp, randomIdx;
 
 		while (counter > 0) {
-			randomIdx = Math.floor(Math.random() * counter);	
+			randomIdx = Math.floor(Math.random() * counter);
 			counter--;
-			
+
 			temp = cards[counter];
 			cards[counter] = cards[randomIdx];
 			cards[randomIdx] = temp;
@@ -72,56 +71,86 @@ class Cards extends React.Component {
 		return cards;
 	}
 
-	handleClick(e) {
-		const value = e.currentTarget.dataset.value
+	handleClick(value, idx) {
+		const card = {
+            idx: idx,
+            value: value
+        }
 
         if (this.state.firstCard) {
-            this.startGame(value)
-        }
-        else {
-            this.state.pairingCard === null ? this.setState({ pairingCard: value }) : this.checkMatch(value)
+            this.startGame(card)
+        } else {
+            this.state.pairingCards.length ? this.checkMatch(card) : this.setPairingCard(card)
         }
 	}
 
-    startGame(value) {
+    startGame(card) {
         this.props.startGame()
         this.setState({
             firstCard: false,
-            pairingCard: value
+            pairingCards: [...this.state.pairingCards, card]
         })
     }
 
-	checkMatch(value) {
-		if (this.state.pairingCard === value) {
-			this.setState({
-				pairingCard: null,
-				pairsMade: [...this.state.pairsMade, value],
-				pairsRemaining: this.state.pairsRemaining - 1,
-				moves: this.state.moves + 1
-			}, this.checkForWin)
-		} else {
-			this.setState({
-				pairingCard: null,
-				moves: this.state.moves + 1
-			})
-		}
+    setPairingCard(card) {
+        this.setState({
+            pairingCards: [...this.state.pairingCards, card]
+        })
+    }
+
+	checkMatch(card) {
+		const pairingCards = [...this.state.pairingCards, card]
+        const moves = this.state.moves + 1
+        let pairsMade, pairsRemaining, callback
+
+		if (!this.matchMade(card)) {
+            pairsMade = this.state.pairsMade
+            pairsRemaining = this.state.pairsRemaining
+            callback = this.flipBack
+        } else {
+            pairsMade = [...this.state.pairsMade, card.value]
+            pairsRemaining = this.state.pairsRemaining - 1
+            callback = this.checkPairs
+        }
+
+        this.setState({
+            pairingCards: pairingCards,
+            pairsMade: pairsMade,
+            pairsRemaining: pairsRemaining,
+            moves: moves
+        }, callback)
 	}
 
-    checkForWin() {
-        if (!this.state.pairsRemaining) {
-            this.props.setMoves(this.state.moves)
-        }
+    matchMade(card) {
+        const matchingCard = this.state.pairingCards.find((c) => c.value === card.value)
+        return !!matchingCard
+    }
+
+    checkPairs() {
+        this.state.pairsRemaining ? this.flipBack() : this.flipBack(true)
+    }
+
+    flipBack(endGame) {
+        const callback = endGame ? () => this.props.setMoves(this.state.moves) : null
+        setTimeout(() => {
+            this.setState({
+                pairingCards: []
+            }, callback)                
+        }, 500)
     }
 
 	render() {
-		return (
-			<div>
+        return (
+			<div className={styles.cardsContainer}>
 				{this.props.cards.map((card, i) => {
-					const active = this.state.pairsMade.includes(card)
+                    const active = !this.state.pairsMade.includes(card)
+					const flipped = !!this.state.pairingCards.find((c) => c.idx === i)
 					return (
                         <Card 
+                            idx={i} 
                             value={card} 
                             active={active} 
+                            flipped={flipped} 
                             handleClick={this.handleClick} 
                             key={i} 
                         />
