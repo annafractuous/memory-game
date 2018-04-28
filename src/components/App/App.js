@@ -8,7 +8,8 @@ class App extends React.Component {
 		this.state = {
 			gamePlay: false,
 			gameState: 'start',
-			difficulty: 'easy'
+			difficulty: 'easy',
+            moves: 0
 		}
 
         this.completeGame = this.completeGame.bind(this)
@@ -36,10 +37,11 @@ class App extends React.Component {
 		})
 	}
 
-	completeGame() {
+	completeGame(moves) {
 		this.setState({
 			gamePlay: false,
-			gameState: 'complete'
+			gameState: 'complete',
+            moves: moves
 		})
 	}
 
@@ -47,7 +49,7 @@ class App extends React.Component {
 		if (this.state.gamePlay) {
 			return <Game difficulty={this.state.difficulty} completeGame={this.completeGame} />
 		} else {
-			return <Message gameState={this.state.gameState} handleUserSelection={this.handleUserSelection} />
+			return <Message gameState={this.state.gameState} moves={this.state.moves} handleUserSelection={this.handleUserSelection} />
 		}
 	}
 }

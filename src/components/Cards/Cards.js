@@ -67,7 +67,7 @@ class Cards extends React.Component {
 
     checkForWin() {
         if (!this.state.pairsRemaining) {
-            this.props.completeGame()
+            this.props.completeGame(this.state.moves)
         }
     }
 

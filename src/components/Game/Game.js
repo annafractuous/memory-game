@@ -7,7 +7,7 @@ import styles from './Game.scss'
 
 const GameDisplay = props => {
 	if (props.readyState === 'true') {
-		const completeGame = () => props.completeGame()
+		const completeGame = (moves) => props.completeGame(moves)
 		return <Cards cards={props.cards[props.difficulty]} completeGame={completeGame} />
 	} else if (props.readyState === 'error') {
 		return "We've encountered an error. Please try again later!"
@@ -26,8 +26,6 @@ class Game extends React.Component {
 			cardsLoaded: 'false',
 			cards: null
 		}
-
-		this.completeGame = this.completeGame.bind(this)
     }
 
 	componentDidMount() {
@@ -56,8 +54,8 @@ class Game extends React.Component {
 		})
 	}
 
-	completeGame() {
-		this.props.completeGame()
+	completeGame(moves) {
+		this.props.completeGame(moves)
 	}
 
 	render() {
@@ -65,7 +63,7 @@ class Game extends React.Component {
 			<div>
 				<h1 className={styles.header}>NYT Games Code Test</h1>
 				<Timer />
-				<GameDisplay readyState={this.state.cardsLoaded} cards={this.state.cards} difficulty={this.props.difficulty} completeGame={this.completeGame} />
+				<GameDisplay readyState={this.state.cardsLoaded} cards={this.state.cards} difficulty={this.props.difficulty} completeGame={(moves) => this.completeGame(moves)} />
 			</div>
 		)
 	}

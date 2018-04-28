@@ -33,7 +33,7 @@ const Summary = props => {
         <article>
             <Title />
             <div>
-                <p>Done!</p>
+                <p>Done! You won the game in {props.moves} moves.</p>
                 <div>
                     <button onClick={props.handleClick}>Play Again</button>
                 </div>
@@ -72,13 +72,14 @@ class Message extends React.Component {
         if (this.props.gameState === 'start') {
             return <Welcome handleClick={this.selectDifficulty}/>
         } else if (this.props.gameState === 'complete') {
-            return <Summary handleClick={this.restartGame} />
+            return <Summary moves={this.props.moves} handleClick={this.restartGame} />
         }
     }
 }
 Message.propTypes = {
     gameState: PropTypes.string.isRequired,
-    handleUserSelection: PropTypes.func.isRequired
+    handleUserSelection: PropTypes.func.isRequired,
+    moves: PropTypes.number
 }
 
 export default Message
