@@ -33,7 +33,7 @@ const Summary = props => {
         <article>
             <Title />
             <div>
-                <p>Done! You won the game in {props.moves} moves.</p>
+                <p>Done! You won the game in {props.moves} moves in {props.time}.</p>
                 <div>
                     <button onClick={props.handleClick}>Play Again</button>
                 </div>
@@ -42,7 +42,9 @@ const Summary = props => {
     )
 }
 Summary.propTypes = {
-    handleClick: PropTypes.func.isRequired
+    handleClick: PropTypes.func.isRequired,
+    moves: PropTypes.number.isRequired,
+    time: PropTypes.string.isRequired
 }
 
 class Message extends React.Component {
@@ -70,16 +72,25 @@ class Message extends React.Component {
 
     render() {
         if (this.props.gameState === 'start') {
-            return <Welcome handleClick={this.selectDifficulty}/>
+            return (
+                <Welcome handleClick={this.selectDifficulty}/>
+            )
         } else if (this.props.gameState === 'complete') {
-            return <Summary moves={this.props.moves} handleClick={this.restartGame} />
+            return (
+                <Summary 
+                    moves={this.props.moves} 
+                    time={this.props.time} 
+                    handleClick={this.restartGame} 
+                />
+            )
         }
     }
 }
 Message.propTypes = {
     gameState: PropTypes.string.isRequired,
     handleUserSelection: PropTypes.func.isRequired,
-    moves: PropTypes.number
+    moves: PropTypes.number,
+    time: PropTypes.string
 }
 
 export default Message

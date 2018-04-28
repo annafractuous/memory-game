@@ -5,22 +5,8 @@ import Cards from '../Cards/Cards'
 
 import styles from './Game.scss'
 
-const GamePlay = props => {
-    const completeGame = (moves) => props.completeGame(moves)
-    return (
-        <div>
-            <Timer />
-            <Cards cards={props.cards} completeGame={completeGame} />
-        </div>
-    )
-}
-GamePlay.propTypes = {
-    cards: PropTypes.array.isRequired,
-    completeGame: PropTypes.func.isRequired
-}
-
 const GameDisplay = props => {
-    switch (props.readyState) {
+    switch (props.cardsLoaded) {
         case 'false':
 	    	return 'Loading...'
         case 'error':
@@ -29,16 +15,40 @@ const GameDisplay = props => {
     }
 }
 GameDisplay.propTypes = {
-    readyState: PropTypes.string.isRequired
+    cardsLoaded: PropTypes.string.isRequired
+}
+
+const GamePlay = props => {
+    const startGame = () => props.startGame()
+    const setTime = (time) => props.setTime(time)
+    const setMoves = (moves) => props.setMoves(moves)
+    return (
+        <div>
+            <Timer gamePlay={props.gamePlay} setTime={setTime} />
+            <Cards startGame={startGame} cards={props.cards} setMoves={setMoves} />
+        </div>
+    )
+}
+GamePlay.propTypes = {
+    cards: PropTypes.array.isRequired,
+    gamePlay: PropTypes.bool.isRequired,
+    startGame: PropTypes.func.isRequired,
+    setTime: PropTypes.func.isRequired,
+    setMoves: PropTypes.func.isRequired
 }
 
 class Game extends React.Component {
     constructor(props) {
         super(props)
 		this.state = {
+            gamePlay: false,
 			cardsLoaded: 'false',
 			cards: null
 		}
+
+        this.startGame = this.startGame.bind(this)        
+        this.setMoves = this.setMoves.bind(this)        
+        this.setTime = this.setTime.bind(this)        
     }
 
 	componentDidMount() {
@@ -67,8 +77,21 @@ class Game extends React.Component {
 		})
 	}
 
-	completeGame(moves) {
-		this.props.completeGame(moves)
+    startGame() {
+        this.setState({
+            gamePlay: true
+        })
+    }
+
+	setMoves(moves) {
+		this.props.setMoves(moves)
+        this.setState({
+            gamePlay: false
+        })
+	}
+	
+    setTime(time) {
+		this.props.setTime(time)
 	}
 
 	render() {
@@ -77,20 +100,24 @@ class Game extends React.Component {
             return (
                 <GamePlay 
                     cards={cardSet} 
-                    completeGame={(moves) => this.completeGame(moves)} 
+                    gamePlay={this.state.gamePlay}
+                    startGame={this.startGame}
+                    setMoves={this.setMoves} 
+                    setTime={this.setTime} 
                 />
             )
         }
         else {
             return (
-                <GameDisplay readyState={this.state.cardsLoaded} />
+                <GameDisplay cardsLoaded={this.state.cardsLoaded} />
             )
         }
 	}
 }
 Game.propTypes = {
     difficulty: PropTypes.string.isRequired,
-    completeGame: PropTypes.func.isRequired
+    setMoves: PropTypes.func.isRequired,
+    setTime: PropTypes.func.isRequired
 }
 
 export default Game

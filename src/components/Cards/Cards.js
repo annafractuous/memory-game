@@ -6,6 +6,7 @@ class Cards extends React.Component {
     constructor(props) {
         super(props)
 		this.state = {
+            firstCard: true,
 			pairingCard: null,
 			pairsMade: [],
 			pairsRemaining: this.props.cards.length / 2,
@@ -39,15 +40,22 @@ class Cards extends React.Component {
 
 	handleClick(e) {
 		const value = e.currentTarget.dataset.value
-		
-		if (this.state.pairingCard === null) {
-			this.setState({
-				pairingCard: value
-			})
-		} else {
-			this.checkMatch(value)
-		}
+
+        if (this.state.firstCard) {
+            this.startGame(value)
+        }
+        else {
+            this.state.pairingCard === null ? this.setState({ pairingCard: value }) : this.checkMatch(value)
+        }
 	}
+
+    startGame(value) {
+        this.props.startGame()
+        this.setState({
+            firstCard: false,
+            pairingCard: value
+        })
+    }
 
 	checkMatch(value) {
 		if (this.state.pairingCard === value) {
@@ -67,7 +75,7 @@ class Cards extends React.Component {
 
     checkForWin() {
         if (!this.state.pairsRemaining) {
-            this.props.completeGame(this.state.moves)
+            this.props.setMoves(this.state.moves)
         }
     }
 
@@ -76,7 +84,14 @@ class Cards extends React.Component {
 			<div>
 				{this.props.cards.map((card, i) => {
 					const active = this.state.pairsMade.includes(card)
-					return <Card value={card} active={active} handleClick={this.handleClick} key={i} />
+					return (
+                        <Card 
+                            value={card} 
+                            active={active} 
+                            handleClick={this.handleClick} 
+                            key={i} 
+                        />
+                    )
 				}, this)}
 			</div>
 		)
@@ -84,7 +99,8 @@ class Cards extends React.Component {
 }
 Cards.propTypes = {
     cards: PropTypes.array.isRequired,
-    completeGame: PropTypes.func.isRequired
+    startGame: PropTypes.func.isRequired,
+    setMoves: PropTypes.func.isRequired
 }
 
 export default Cards

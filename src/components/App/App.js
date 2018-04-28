@@ -9,10 +9,12 @@ class App extends React.Component {
 			gamePlay: false,
 			gameState: 'start',
 			difficulty: 'easy',
-            moves: 0
+            totalTime: '0:00',
+            totalMoves: 0
 		}
 
-        this.completeGame = this.completeGame.bind(this)
+        this.setMoves = this.setMoves.bind(this)
+        this.setTime = this.setTime.bind(this)
         this.handleUserSelection = this.handleUserSelection.bind(this)
 	}
 
@@ -37,19 +39,45 @@ class App extends React.Component {
 		})
 	}
 
-	completeGame(moves) {
-		this.setState({
-			gamePlay: false,
-			gameState: 'complete',
-            moves: moves
-		})
+    setMoves(moves) {
+        this.setState({
+            totalMoves: moves
+        }, this.completeGame)
+    }
+
+    setTime(time) {
+        this.setState({
+            totalTime: time
+        }, this.completeGame)
+    }
+
+	completeGame() {
+        if (this.state.totalMoves !== 0 && this.state.totalTime !== '0:00') {
+            this.setState({
+                gamePlay: false,
+                gameState: 'complete'
+            })
+        }
 	}
 
 	render() {
 		if (this.state.gamePlay) {
-			return <Game difficulty={this.state.difficulty} completeGame={this.completeGame} />
+			return (
+                <Game 
+                    difficulty={this.state.difficulty} 
+                    setMoves={this.setMoves} 
+                    setTime={this.setTime} 
+                />
+            )
 		} else {
-			return <Message gameState={this.state.gameState} moves={this.state.moves} handleUserSelection={this.handleUserSelection} />
+			return (
+                <Message 
+                    gameState={this.state.gameState} 
+                    moves={this.state.totalMoves} 
+                    time={this.state.totalTime} 
+                    handleUserSelection={this.handleUserSelection} 
+                />
+            )
 		}
 	}
 }
