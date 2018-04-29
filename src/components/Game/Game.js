@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Header from '../Header/Header'
 import Timer from '../Timer/Timer'
 import Cards from '../Cards/Cards'
 
@@ -109,21 +110,26 @@ class Game extends React.Component {
 	}
 
 	render() {
+        let component
         if (this.state.cardsLoaded === 'true') {
             const cardSet = this.state.cards[this.props.difficulty]
-            return (
+            component =
                 <GamePlay 
                     cards={cardSet} 
                     setMoves={this.setMoves} 
                     setTime={this.setTime} 
                 />
-            )
-        }
-        else {
-            return (
+        } else {
+            component = 
                 <GameDisplay cardsLoaded={this.state.cardsLoaded} />
-            )
         }
+
+        return (
+            <div className={styles.gameContainer}>
+                <Header style='gamePlay' />
+                {component}
+            </div>
+        )
 	}
 }
 Game.propTypes = {

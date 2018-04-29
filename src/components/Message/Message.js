@@ -69,7 +69,7 @@ class Message extends React.Component {
         
         return (
             <article className={styles.screen}>
-                <Header />
+                <Header style='screen' />
                 {screen}
             </article>
         )
