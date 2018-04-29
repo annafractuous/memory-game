@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
 import styles from './Header.scss'
@@ -11,6 +12,9 @@ const Header = props => {
             <h4 className={styles.subTitle}>An unforgettable classic</h4>
         </header>
     )
+}
+Header.propTypes = {
+    style: PropTypes.string
 }
 
 export default Header
