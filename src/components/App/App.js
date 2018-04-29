@@ -2,6 +2,8 @@ import React from 'react'
 import Message from '../Message/Message'
 import Game from '../Game/Game'
 
+import styles from './App.scss'
+
 class App extends React.Component {
 	constructor() {
 		super()
@@ -61,24 +63,24 @@ class App extends React.Component {
 	}
 
 	render() {
-		if (this.state.gamePlay) {
-			return (
-                <Game 
-                    difficulty={this.state.difficulty} 
-                    setMoves={this.setMoves} 
-                    setTime={this.setTime} 
-                />
-            )
-		} else {
-			return (
-                <Message 
-                    gameState={this.state.gameState} 
-                    moves={this.state.totalMoves} 
-                    time={this.state.totalTime} 
-                    handleUserSelection={this.handleUserSelection} 
-                />
-            )
-		}
+        const component = this.state.gamePlay ? 
+            <Game 
+                difficulty={this.state.difficulty} 
+                setMoves={this.setMoves} 
+                setTime={this.setTime} 
+            /> :
+            <Message 
+                gameState={this.state.gameState} 
+                moves={this.state.totalMoves} 
+                time={this.state.totalTime} 
+                handleUserSelection={this.handleUserSelection} 
+            />
+		
+        return (
+            <div className={styles.memoryGame}>
+                {component}
+            </div>
+        )
 	}
 }
 

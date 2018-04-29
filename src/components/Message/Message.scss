@@ -1,0 +1,35 @@
+$open-sans: 'Open Sans', 'Helvetica Neue', Helvetica, sans-serif;
+
+.screen {
+    background: skyblue;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px 20px 30px;
+    font-family: $open-sans;
+    text-align: center;
+    color: white;
+}
+
+.text {
+    margin-bottom: 10px;
+}
+
+
+.button {
+    width:  75px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    background-color: aliceblue;
+    color: darkslategray;
+    border-radius: 5px;
+    border: none;
+
+    &:not(:last-child) {
+        margin-right: 10px;
+    }
+}

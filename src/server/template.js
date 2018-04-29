@@ -9,6 +9,7 @@ export default vo => `<!DOCTYPE html>
     <meta charSet='utf-8' />
     <meta httpEquiv="Content-Language" content="en" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600|Poiret+One" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
     ${
       vo.mainCSSBundle
@@ -16,7 +17,7 @@ export default vo => `<!DOCTYPE html>
         : ''
     }
 
-    <title>NYT Games Web Code Test</title>
+    <title>Memory</title>
   </head>
 
   <body>

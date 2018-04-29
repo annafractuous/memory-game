@@ -1,27 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Header from '../Header/Header'
 
-const Title = () => {
-    return (
-        <header>
-            <h1>Memory</h1>
-            <h4>An unforgettable classic</h4>
-        </header>
-    )
-}
+import styles from './Message.scss'
 
 const Welcome = props => {
     return (
-        <article>
-            <Title />
+        <div className={styles.welcome}>
+            <p className={styles.text}>Select your difficulty level</p>
             <div>
-                <p>Select your difficulty level.</p>
-                <div>
-                    <button value='easy' onClick={props.handleClick}>Easy</button>
-                    <button value='hard' onClick={props.handleClick}>Hard</button>
-                </div>
+                <button className={styles.button} value='easy' onClick={props.handleClick}>Easy</button>
+                <button className={styles.button} value='hard' onClick={props.handleClick}>Hard</button>
             </div>
-        </article>
+        </div>
     )
 }
 Welcome.propTypes = {
@@ -30,15 +21,12 @@ Welcome.propTypes = {
 
 const Summary = props => {
     return (
-        <article>
-            <Title />
+        <div className={styles.summary}>
+            <p className={styles.text}>Done! You won the game in {props.moves} moves in {props.time}.</p>
             <div>
-                <p>Done! You won the game in {props.moves} moves in {props.time}.</p>
-                <div>
-                    <button onClick={props.handleClick}>Play Again</button>
-                </div>
+                <button className={styles.button} onClick={props.handleClick}>Play Again</button>
             </div>
-        </article>
+        </div>
     )
 }
 Summary.propTypes = {
@@ -71,19 +59,20 @@ class Message extends React.Component {
     }
 
     render() {
-        if (this.props.gameState === 'start') {
-            return (
-                <Welcome handleClick={this.selectDifficulty}/>
-            )
-        } else if (this.props.gameState === 'complete') {
-            return (
-                <Summary 
-                    moves={this.props.moves} 
-                    time={this.props.time} 
-                    handleClick={this.restartGame} 
-                />
-            )
-        }
+        const screen = this.props.gameState === 'start' ?
+            <Welcome handleClick={this.selectDifficulty}/> :
+            <Summary 
+                moves={this.props.moves} 
+                time={this.props.time} 
+                handleClick={this.restartGame} 
+            />
+        
+        return (
+            <article className={styles.screen}>
+                <Header />
+                {screen}
+            </article>
+        )
     }
 }
 Message.propTypes = {
