@@ -1,6 +1,16 @@
 .timer {
-    font-size: 18px;
+    font-size: 12px;
     text-align: right;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     padding: 0 2vw;
+
+    @media (min-width: 768px) {
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    @media (min-width: 1024px) {
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
 }
