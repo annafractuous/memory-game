@@ -4,7 +4,8 @@
 .cardsContainer {
     display: flex;
     flex-wrap: wrap;
-    margin-left: 20px;
+    justify-content: center;
+    margin-left: 2vw;
 }
 
 /*********
@@ -13,13 +14,15 @@
 .cardContainer,
 .front,
 .back {
-    width: calc(25vw - 25px);
-    height: calc(25vw - 25px);
+    width:  22vw;
+    height: 22vw;
+    max-width:  150px;
+    max-height: 150px;
 }
 
 .cardContainer {
 	perspective: 1000px;
-    margin: 0 20px 20px 0;
+    margin: 0 2vw 2vw 0;
     opacity: 0;
     pointer-events: none;
     transition: opacity 300ms ease 500ms;
@@ -46,15 +49,21 @@
 	top: 0;
 	left: 0;
 	backface-visibility: hidden;
+    border-radius: 5px;
 }
 
 .front {
 	transform: rotateY(180deg);
-    font-size: 32px;
-    line-height: calc(25vw - 25px);
+    font-size: 10vw;
+    line-height: 22vw;
     text-align: center;
-    border: 1px solid black;
-    border-radius: 5px;
+    color: white;
+    background-color: skyblue;
+
+    @media (min-width: 680px) {
+        font-size: 75px;
+        line-height: 150px;
+    }
 }
 
 .back {
