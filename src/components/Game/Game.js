@@ -58,6 +58,7 @@ class GamePlay extends React.Component {
                 <Cards 
                     startGame={this.startGame} 
                     cards={this.props.cards} 
+                    background={this.props.background} 
                     setMoves={this.setMoves} 
                 />
             </div>
@@ -67,7 +68,8 @@ class GamePlay extends React.Component {
 GamePlay.propTypes = {
     setMoves: PropTypes.func.isRequired,
     setTime: PropTypes.func.isRequired,
-    cards: PropTypes.array.isRequired
+    cards: PropTypes.array.isRequired,
+    background: PropTypes.string.isRequired
 }
 
 class Game extends React.Component {
@@ -116,6 +118,7 @@ class Game extends React.Component {
             component =
                 <GamePlay 
                     cards={cardSet} 
+                    background={this.props.background} 
                     setMoves={this.setMoves} 
                     setTime={this.setTime} 
                 />
@@ -134,6 +137,7 @@ class Game extends React.Component {
 }
 Game.propTypes = {
     difficulty: PropTypes.string.isRequired,
+    background: PropTypes.string.isRequired,
     setMoves: PropTypes.func.isRequired,
     setTime: PropTypes.func.isRequired
 }

@@ -16,6 +16,9 @@ class Card extends React.Component {
 	}
 
 	render() {
+        const bgStyle = {
+            backgroundImage: `url(${this.props.background})`
+        }
 		const cardClass = classNames([styles.cardContainer], {
             [styles.active]: this.props.active,
             [styles.flipped]: this.props.flipped
@@ -28,7 +31,7 @@ class Card extends React.Component {
                     <button className={styles.front} aria-label={this.props.value} disabled={disabled}>
                         {this.props.value}
                     </button>
-                    <div className={styles.back}></div>
+                    <div className={styles.back} style={bgStyle}></div>
                 </div>
             </div>
 		)
@@ -39,6 +42,7 @@ Card.propTypes = {
     value: PropTypes.string.isRequired,
     active: PropTypes.bool.isRequired,
     flipped: PropTypes.bool.isRequired,
+    background: PropTypes.string.isRequired,
     handleClick: PropTypes.func.isRequired
 }
 
@@ -155,6 +159,7 @@ class Cards extends React.Component {
                             value={card} 
                             active={active} 
                             flipped={flipped} 
+                            background={this.props.background} 
                             handleClick={this.handleClick} 
                             key={i} 
                         />
@@ -166,6 +171,7 @@ class Cards extends React.Component {
 }
 Cards.propTypes = {
     cards: PropTypes.array.isRequired,
+    background: PropTypes.string.isRequired,
     startGame: PropTypes.func.isRequired,
     setMoves: PropTypes.func.isRequired
 }

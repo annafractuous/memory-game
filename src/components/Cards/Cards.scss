@@ -69,6 +69,8 @@
 .back {
 	z-index: 2;
 	transform: rotateY(0deg);
-    background-color: green;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
     cursor: pointer;
 }

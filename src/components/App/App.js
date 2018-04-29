@@ -10,7 +10,8 @@ class App extends React.Component {
 		this.state = {
 			gamePlay: false,
 			gameState: 'start',
-			difficulty: 'easy',
+			difficulty: '',
+			background: '',
             totalTime: '0:00',
             totalMoves: 0
 		}
@@ -21,19 +22,38 @@ class App extends React.Component {
 	}
 
 	handleUserSelection(selection) {
-		if (selection.type === 'difficulty') {
-			this.selectDifficulty(selection.value)
-		} else if (selection.type === 'replay') {
-			this.restartGame()
-		}
+        switch (selection.type) {
+            case 'difficulty':
+			    this.selectDifficulty(selection.value)
+                break
+            case 'background':
+                this.selectBackground(selection.value)
+                break
+            case  'replay':
+			    this.restartGame()
+                break
+        }
 	}
 
 	selectDifficulty(difficulty) {
 		this.setState({
-			gamePlay: true,
 			difficulty: difficulty
-		})
+		}, this.startGame)
 	}
+
+	selectBackground(background) {
+		this.setState({
+			background: background
+		}, this.startGame)
+	}
+
+    startGame() {
+        if (this.state.background !== '' && this.state.difficulty !== '') {
+            this.setState({
+                gamePlay: true
+            })
+        }
+    }
 
 	restartGame() {
 		this.setState({
@@ -66,6 +86,7 @@ class App extends React.Component {
         const component = this.state.gamePlay ? 
             <Game 
                 difficulty={this.state.difficulty} 
+                background={this.state.background} 
                 setMoves={this.setMoves} 
                 setTime={this.setTime} 
             /> :

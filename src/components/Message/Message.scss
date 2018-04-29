@@ -12,6 +12,14 @@
     color: white;
 }
 
+.selectionSection {
+    margin: 10px 0 20px;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
 .text {
     margin-bottom: 10px;
 
@@ -20,7 +28,24 @@
     }
 }
 
+.bgBtnsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: -15px;
+}
+
+/************
+*  Buttons  *
+*************/
 .button {
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.defaultButton {
+    @extend .button;
     height: 30px;
     min-width: 75px;
     padding: 0 20px;
@@ -28,11 +53,21 @@
     font-size: 14px;
     background-color: aliceblue;
     color: darkslategray;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
 
     &:not(:last-child) {
         margin-right: 10px;
     }
+}
+
+.bgButton {
+    @extend .button;
+    height: 100px;
+    width:  100px;
+    max-height: 15vh;
+    max-width:  15vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-bottom: 15px;
+    margin-right: 15px;
 }
