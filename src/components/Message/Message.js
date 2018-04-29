@@ -22,7 +22,7 @@ Welcome.propTypes = {
 const Summary = props => {
     return (
         <div className={styles.summary}>
-            <p className={styles.text}>Done! You won the game in {props.moves} moves in {props.time}.</p>
+            <p className={styles.text}>Done! You won the game with {props.moves} moves in {props.time}.</p>
             <div>
                 <button className={styles.button} onClick={props.handleClick}>Play Again</button>
             </div>
