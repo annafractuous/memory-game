@@ -20,13 +20,14 @@ class Card extends React.Component {
             [styles.active]: this.props.active,
             [styles.flipped]: this.props.flipped
         })
+        const disabled = this.props.flipped || !this.props.active
 
 		return (
-			<div className={cardClass} aria-label={this.props.value} onClick={this.handleClick}>
+			<div className={cardClass} onClick={this.handleClick}>
                 <div className={styles.card}>
-                    <div className={styles.front}>
+                    <button className={styles.front} aria-label={this.props.value} disabled={disabled}>
                         {this.props.value}
-                    </div>
+                    </button>
                     <div className={styles.back}></div>
                 </div>
             </div>
@@ -34,8 +35,10 @@ class Card extends React.Component {
 	}
 }
 Card.propTypes = {
+    idx: PropTypes.number.isRequired,
     value: PropTypes.string.isRequired,
     active: PropTypes.bool.isRequired,
+    flipped: PropTypes.bool.isRequired,
     handleClick: PropTypes.func.isRequired
 }
 
@@ -135,7 +138,8 @@ class Cards extends React.Component {
         setTimeout(() => {
             this.setState({
                 pairingCards: []
-            }, callback)                
+            }, callback)
+            document.activeElement.blur()   // not resetting the focus as intended
         }, 500)
     }
 
