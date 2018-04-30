@@ -3,16 +3,16 @@ import PropTypes from 'prop-types'
 
 import styles from './Timer.scss'
 
-export const getHours = time => {
+const getHours = time => {
 	return Math.floor(time / 3600)
 }
 
-export const getMins = (time, leadingZero) => {
+const getMins = (time, leadingZero) => {
 	const m = Math.floor((time % 3600) / 60)
 	return leadingZero && m < 10 ? `0${m}` : m
 }
 
-export const getSecs = time => {
+const getSecs = time => {
 	const s = time % 60
 	return s < 10 ? `0${s}` : s
 }
