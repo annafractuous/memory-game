@@ -58,7 +58,9 @@ class App extends React.Component {
 
 	restartGame() {
 		this.setState({
-			gameState: 'start'
+			gameState: 'start',
+            totalTime: '0:00',
+            totalMoves: 0
 		})
 	}
 
@@ -78,7 +80,9 @@ class App extends React.Component {
         if (this.state.totalMoves !== 0 && this.state.totalTime !== '0:00') {
             this.setState({
                 gamePlay: false,
-                gameState: 'complete'
+                gameState: 'complete',
+                difficulty: '',
+                background: ''
             })
         }
 	}
