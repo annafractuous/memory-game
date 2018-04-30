@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
+import gameStyles from '../../data/game-styles.js';
 import styles from './Cards.scss'
 
 class Card extends React.Component {
@@ -16,8 +17,11 @@ class Card extends React.Component {
 	}
 
 	render() {
-        const bgStyle = {
-            backgroundImage: `url(${this.props.background})`
+        const backStyle = {
+            backgroundImage: `url(${gameStyles[this.props.background].img})`
+        }
+        const frontStyle = {
+            backgroundColor: gameStyles[this.props.background].cardColor
         }
 		const cardClass = classNames([styles.cardContainer], {
             [styles.active]: this.props.active,
@@ -28,10 +32,10 @@ class Card extends React.Component {
 		return (
 			<div className={cardClass} onClick={this.handleClick}>
                 <div className={styles.card}>
-                    <button className={styles.front} aria-label={this.props.value} disabled={disabled}>
+                    <button className={styles.front} style={frontStyle} aria-label={this.props.value} disabled={disabled}>
                         {this.props.value}
                     </button>
-                    <div className={styles.back} style={bgStyle}></div>
+                    <div className={styles.back} style={backStyle}></div>
                 </div>
             </div>
 		)

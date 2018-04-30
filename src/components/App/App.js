@@ -2,6 +2,7 @@ import React from 'react'
 import Message from '../Message/Message'
 import Game from '../Game/Game'
 
+import gameStyles from '../../data/game-styles.js';
 import styles from './App.scss'
 
 class App extends React.Component {
@@ -83,6 +84,10 @@ class App extends React.Component {
 	}
 
 	render() {
+        const bgColor = this.state.gamePlay && this.state.background.length ? gameStyles[this.state.background].pageColor : 'white'
+        const style = {
+            backgroundColor: bgColor
+        }
         const component = this.state.gamePlay ? 
             <Game 
                 difficulty={this.state.difficulty} 
@@ -98,7 +103,7 @@ class App extends React.Component {
             />
 		
         return (
-            <div className={styles.memoryGame}>
+            <div className={styles.memoryGame} style={style}>
                 {component}
             </div>
         )

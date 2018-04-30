@@ -18,17 +18,17 @@ const difficultyBtns = () => {
 const backgroundBtns = () => {
     const imagesPath = '/assets/images/backgrounds'
     const opts = [
-        { fileName: 'jose-roosevelt.jpg', label: 'Jose Roosevelt, Autumn Story'},
-        { fileName: 'escher.jpg', label: 'M.C. Escher, Relativity'},
-        { fileName: 'kehinde-wiley.jpg', label: 'Kehinde Wiley'},
-        { fileName: 'rothko.jpg', label: 'Rothko, Emerald Bay'},
-        { fileName: 'van-gogh.jpg', label: 'Van Gogh, Almond Blossoms'},
-        { fileName: 'okeeffe.jpg', label: "O'Keeffe, Red Canna"}
+        { name: 'jose-roosevelt', label: 'Jose Roosevelt, Autumn Story'},
+        { name: 'escher', label: 'M.C. Escher, Relativity'},
+        { name: 'kehinde-wiley', label: 'Kehinde Wiley'},
+        { name: 'rothko', label: 'Rothko, Emerald Bay'},
+        { name: 'van-gogh', label: 'Van Gogh, Almond Blossoms'},
+        { name: 'okeeffe', label: "O'Keeffe, Red Canna"}
     ]
 
     let btns = []
     opts.forEach(opt => {
-        const imgPath = `${imagesPath}/${opt.fileName}`
+        const imgPath = `${imagesPath}/${opt.name}.jpg`
         const btnStyle = {
             backgroundImage: `url(${imgPath})`
         }
@@ -36,7 +36,7 @@ const backgroundBtns = () => {
         btns.push({
             label: opt.label,
             text: '',
-            value: imgPath,
+            value: opt.name,
             class: 'bgButton',
             style: btnStyle
         })
