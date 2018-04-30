@@ -1,16 +1,17 @@
 {
-  "name": "nyt-games-web-code-test",
-  "author": "Your Name Here",
-  "description": "A game we won’t soon forget",
+  "name": "memory-game",
+  "author": "Anna Rasshivkina",
+  "description": "An unforgettable classic card game",
   "version": "1.0.0",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
-    "url": "https://github.com/NYTimes/games-web-code-test"
+    "url": "https://github.com/annafractuous/memory-game"
   },
   "private": true,
   "dependencies": {
     "babel-preset-kyt-react": "0.3.0",
+    "classnames": "^2.2.5",
     "compression": "1.7.1",
     "express": "4.16.2",
     "kyt": "0.9.0",
