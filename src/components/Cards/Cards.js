@@ -148,8 +148,11 @@ class Cards extends React.Component {
     }
 
 	render() {
+        const countClass = `count${this.props.cards.length}`
+		const containerClass = classNames([styles.cardsContainer], [styles[countClass]])
+
         return (
-			<div className={styles.cardsContainer}>
+			<div className={containerClass}>
 				{this.props.cards.map((card, i) => {
                     const active = !this.state.pairsMade.includes(card)
 					const flipped = !!this.state.pairingCards.find((c) => c.idx === i)
