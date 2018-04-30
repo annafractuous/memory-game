@@ -3,10 +3,8 @@ $open-sans: 'Open Sans', 'Helvetica Neue', Helvetica, sans-serif;
 .memoryGame {
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
-    max-width: calc(600px + 10vw);
-    margin: 0 auto;
+    align-items: flex-start;
+    min-height: 100vh;
     padding: 30px 0;
     color: darkslategray;
     font-family: $open-sans;
