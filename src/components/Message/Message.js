@@ -59,18 +59,18 @@ class Message extends React.Component {
         this.restartGame = this.restartGame.bind(this)
     }
 
-    selectDifficulty(e) {
+    selectDifficulty(value) {
         const selectionObject = {
             type: 'difficulty',
-            value: e.target.value
+            value: value
         }
         this.props.handleUserSelection(selectionObject)
     }
 
-    selectBackground(e) {
+    selectBackground(value) {
         const selectionObject = {
             type: 'background',
-            value: e.target.value
+            value: value
         }
         this.props.handleUserSelection(selectionObject)
     }

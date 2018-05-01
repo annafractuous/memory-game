@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 
 import buttons from '../../data/buttons.js';
 import styles from './Buttons.scss'
@@ -7,9 +8,10 @@ import styles from './Buttons.scss'
 const Button = props => {
     const style = props.style ? props.style : {}
     const text = props.text ? props.text : ''
+    
     return (
         <button 
-            className={styles[props.btnClass]} 
+            className={props.btnClass} 
             value={props.value} 
             style={style} 
             onClick={props.onClick} 
@@ -28,30 +30,52 @@ Button.propTypes = {
     onClick: PropTypes.func.isRequired
 }
 
-const ButtonGroup = props => {
-    const btnData = buttons[props.btns]
-    const containerClass = props.containerClass ? props.containerClass : ''
+class ButtonGroup extends React.Component {
+    constructor(props) {
+		super(props)
+		this.state = {
+			selected: null
+		}
 
-    return (
-        <div className={styles.selectionSection}>
-            <p className={styles.text}>{props.questionText}</p>
-            <div className={containerClass}>
-                {btnData.map((btn, i) => {
-                    return (
-                        <Button
-                            btnClass={btn.class}
-                            value={btn.value}
-                            label={btn.label}
-                            text={btn.text}
-                            style={btn.style}
-                            onClick={props.handleSelect}
-                            key={i}
-                        />
-                    )
-                })}
+        this.handleSelect = this.handleSelect.bind(this)
+    }
+
+    handleSelect(e) {
+        this.setState({
+            selected: e.target.value
+        })
+        this.props.handleSelect(e.target.value)
+    }
+
+    render() {
+        const btnData = buttons[this.props.btns]
+        const containerClass = this.props.containerClass ? this.props.containerClass : ''
+
+        return (
+            <div className={styles.selectionSection}>
+                <p className={styles.text}>{this.props.questionText}</p>
+                <div className={containerClass}>
+                    {btnData.map((btn, i) => {
+                        const btnClass = classNames([styles[btn.class]], {
+                            [styles.selected]: this.state.selected === btn.value
+                        })
+
+                        return (
+                            <Button
+                                btnClass={btnClass}
+                                value={btn.value}
+                                label={btn.label}
+                                text={btn.text}
+                                style={btn.style}
+                                onClick={this.handleSelect}
+                                key={i}
+                            />
+                        )
+                    }, this)}
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
 ButtonGroup.propTypes = {
     questionText: PropTypes.string.isRequired,
