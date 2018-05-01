@@ -1,6 +1,7 @@
 import React from 'react'
 import Message from '../Message/Message'
 import Game from '../Game/Game'
+import classNames from 'classnames'
 
 import gameStyles from '../../data/game-styles.js';
 import styles from './App.scss'
@@ -14,11 +15,13 @@ class App extends React.Component {
 			difficulty: '',
 			background: '',
             totalTime: '0:00',
-            totalMoves: 0
+            totalMoves: 0,
+            daliTime: true
 		}
 
         this.setMoves = this.setMoves.bind(this)
         this.setTime = this.setTime.bind(this)
+        this.daliTime = this.daliTime.bind(this)
         this.handleUserSelection = this.handleUserSelection.bind(this)
 	}
 
@@ -64,6 +67,21 @@ class App extends React.Component {
 		})
 	}
 
+    daliTime() {
+        this.setState({
+            daliTime: true
+        }, this.stopDali)
+    }
+
+    stopDali() {
+        const daliTime = setTimeout(() => {
+            clearTimeout(daliTime)
+            this.setState({
+                daliTime: false
+            })
+        }, 3000)
+    }
+
     setMoves(moves) {
         this.setState({
             totalMoves: moves
@@ -92,12 +110,16 @@ class App extends React.Component {
         const style = {
             backgroundColor: bgColor
         }
+        const appClass = classNames([styles.memoryGame], {
+            [styles.daliTime]: this.state.daliTime
+        })
         const component = this.state.gamePlay ? 
             <Game 
                 difficulty={this.state.difficulty} 
                 background={this.state.background} 
                 setMoves={this.setMoves} 
                 setTime={this.setTime} 
+                daliTime={this.daliTime} 
             /> :
             <Message 
                 gameState={this.state.gameState} 
@@ -107,7 +129,8 @@ class App extends React.Component {
             />
 		
         return (
-            <div className={styles.memoryGame} style={style}>
+            <div className={appClass} style={style}>
+                <div className={styles.dali}></div>
                 {component}
             </div>
         )

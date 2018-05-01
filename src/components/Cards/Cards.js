@@ -58,7 +58,8 @@ class Cards extends React.Component {
 			pairingCards: [],
 			pairsMade: [],
 			pairsRemaining: this.props.cards.length / 2,
-			moves: 0
+			moves: 0,
+            movesSinceMatch: 0
 		}
 		this.cards = this.shuffleCards()
 
@@ -112,23 +113,26 @@ class Cards extends React.Component {
 	checkMatch(card) {
 		const pairingCards = [...this.state.pairingCards, card]
         const moves = this.state.moves + 1
-        let pairsMade, pairsRemaining, callback
+        let pairsMade, pairsRemaining, callback, movesSinceMatch
 
 		if (!this.matchMade(card)) {
             pairsMade = this.state.pairsMade
             pairsRemaining = this.state.pairsRemaining
             callback = this.flipBack
+            movesSinceMatch = this.state.movesSinceMatch + 1
         } else {
             pairsMade = [...this.state.pairsMade, card.value]
             pairsRemaining = this.state.pairsRemaining - 1
             callback = this.checkPairs
+            movesSinceMatch = 0
         }
 
         this.setState({
             pairingCards: pairingCards,
             pairsMade: pairsMade,
             pairsRemaining: pairsRemaining,
-            moves: moves
+            moves: moves,
+            movesSinceMatch: movesSinceMatch
         }, callback)
 	}
 
@@ -142,7 +146,15 @@ class Cards extends React.Component {
     }
 
     flipBack(endGame) {
-        const callback = endGame ? () => this.props.setMoves(this.state.moves) : null
+        let callback
+        if (endGame) {
+            callback = () => this.props.setMoves(this.state.moves)
+        } else if (this.state.movesSinceMatch > 5) {
+            callback = () => this.props.daliTime()
+        } else {
+            callback = null
+        }
+
         setTimeout(() => {
             this.setState({
                 pairingCards: []

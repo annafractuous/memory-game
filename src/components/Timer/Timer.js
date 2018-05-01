@@ -40,7 +40,7 @@ class TimerContainer extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.gamePlay) {
+		if (nextProps.gamePlay && !this.interval) {
 			this.interval = setInterval(this.tick.bind(this), 1000)
 		} else if (this.props.gamePlay && !nextProps.gamePlay) {
 			this.props.setTime(formatTime(this.state.secondsElapsed))

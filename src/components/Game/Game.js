@@ -27,6 +27,7 @@ class GamePlay extends React.Component {
 		}
 
         this.startGame = this.startGame.bind(this)        
+        this.daliTime = this.daliTime.bind(this)        
         this.setMoves = this.setMoves.bind(this)        
         this.setTime = this.setTime.bind(this)        
     }
@@ -35,6 +36,10 @@ class GamePlay extends React.Component {
         this.setState({
             gamePlay: true
         })
+    }
+
+    daliTime() {
+        this.props.daliTime()
     }
 
 	setMoves(moves) {
@@ -60,6 +65,7 @@ class GamePlay extends React.Component {
                     cards={this.props.cards} 
                     background={this.props.background} 
                     setMoves={this.setMoves} 
+                    daliTime={this.daliTime} 
                 />
             </section>
         )
@@ -83,6 +89,7 @@ class Game extends React.Component {
        
         this.setMoves = this.props.setMoves.bind(this)        
         this.setTime = this.props.setTime.bind(this)        
+        this.daliTime = this.props.daliTime.bind(this)        
     }
 
 	componentDidMount() {
@@ -121,6 +128,7 @@ class Game extends React.Component {
                     background={this.props.background} 
                     setMoves={this.setMoves} 
                     setTime={this.setTime} 
+                    daliTime={this.daliTime} 
                 />
         } else {
             component = 
