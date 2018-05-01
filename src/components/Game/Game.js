@@ -50,7 +50,7 @@ class GamePlay extends React.Component {
 
     render() {
         return (
-            <div>
+            <section>
                 <Timer 
                     gamePlay={this.state.gamePlay} 
                     setTime={this.setTime} 
@@ -61,7 +61,7 @@ class GamePlay extends React.Component {
                     background={this.props.background} 
                     setMoves={this.setMoves} 
                 />
-            </div>
+            </section>
         )
     }
 }
@@ -128,10 +128,10 @@ class Game extends React.Component {
         }
 
         return (
-            <div className={styles.gameContainer}>
+            <article className={styles.gameContainer}>
                 <Header style='gamePlay' />
                 {component}
-            </div>
+            </article>
         )
 	}
 }
