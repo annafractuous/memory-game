@@ -8,10 +8,11 @@ import styles from './Buttons.scss'
 const Button = props => {
     const style = props.style ? props.style : {}
     const text = props.text ? props.text : ''
+    const btnClass = props.btnClass.split(' ').map(clss => styles[clss]).join(' ')
     
     return (
         <button 
-            className={props.btnClass} 
+            className={btnClass} 
             value={props.value} 
             style={style} 
             onClick={props.onClick} 
@@ -56,8 +57,8 @@ class ButtonGroup extends React.Component {
                 <p className={styles.text}>{this.props.questionText}</p>
                 <div className={containerClass}>
                     {btnData.map((btn, i) => {
-                        const btnClass = classNames([styles[btn.class]], {
-                            [styles.selected]: this.state.selected === btn.value
+                        const btnClass = classNames(btn.class, {
+                            selected: this.state.selected === btn.value
                         })
 
                         return (
