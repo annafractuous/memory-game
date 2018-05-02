@@ -16,12 +16,12 @@ class App extends React.Component {
 			background: '',
             totalTime: '0:00',
             totalMoves: 0,
-            daliTime: true
+            dillyDali: false
 		}
 
         this.setMoves = this.setMoves.bind(this)
         this.setTime = this.setTime.bind(this)
-        this.daliTime = this.daliTime.bind(this)
+        this.dillyDali = this.dillyDali.bind(this)
         this.handleUserSelection = this.handleUserSelection.bind(this)
 	}
 
@@ -67,17 +67,17 @@ class App extends React.Component {
 		})
 	}
 
-    daliTime() {
+    dillyDali() {
         this.setState({
-            daliTime: true
+            dillyDali: true
         }, this.stopDali)
     }
 
     stopDali() {
-        const daliTime = setTimeout(() => {
-            clearTimeout(daliTime)
+        const dillyDali = setTimeout(() => {
+            clearTimeout(dillyDali)
             this.setState({
-                daliTime: false
+                dillyDali: false
             })
         }, 3000)
     }
@@ -111,7 +111,7 @@ class App extends React.Component {
             backgroundColor: bgColor
         }
         const appClass = classNames([styles.memoryGame], {
-            [styles.daliTime]: this.state.daliTime
+            [styles.dillyDali]: this.state.dillyDali
         })
         const component = this.state.gamePlay ? 
             <Game 
@@ -119,7 +119,7 @@ class App extends React.Component {
                 background={this.state.background} 
                 setMoves={this.setMoves} 
                 setTime={this.setTime} 
-                daliTime={this.daliTime} 
+                dillyDali={this.dillyDali} 
             /> :
             <Message 
                 gameState={this.state.gameState} 

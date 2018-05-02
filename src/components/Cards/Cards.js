@@ -146,18 +146,22 @@ class Cards extends React.Component {
     }
 
     flipBack(endGame) {
-        let callback
+        let callback, movesSinceMatch
         if (endGame) {
+            movesSinceMatch = 0
             callback = () => this.props.setMoves(this.state.moves)
-        } else if (this.state.movesSinceMatch > 5) {
-            callback = () => this.props.daliTime()
+        } else if (this.state.movesSinceMatch > 4) {
+            movesSinceMatch = 0
+            callback = () => this.props.dillyDali()
         } else {
+            movesSinceMatch = this.state.movesSinceMatch
             callback = null
         }
 
         setTimeout(() => {
             this.setState({
-                pairingCards: []
+                pairingCards: [],
+                movesSinceMatch: movesSinceMatch
             }, callback)
             document.activeElement.blur()   // not resetting the focus as intended
         }, 500)

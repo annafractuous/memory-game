@@ -16,16 +16,16 @@ $open-sans: 'Open Sans', 'Helvetica Neue', Helvetica, sans-serif;
     height: 60px;
     width:  60px;
     position: absolute;
-    left:  calc(-100vw + 75px);
+    left: -100%;
     top: 0;
     transition: left 300ms ease-out;
 
-    .daliTime & {
+    .dillyDali & {
         left: 0;
         transition: left 300ms ease-in;
 
         &::after {
-            content: "Oh, dear——don't flip out, but time's melting away...";
+            content: "Oh, dear—don't flip out, but time's melting away...";
             position: relative;
             display: block;
             width: calc(100vw - 75px);
@@ -40,7 +40,7 @@ $open-sans: 'Open Sans', 'Helvetica Neue', Helvetica, sans-serif;
         width:  75px;
         left:  -190px;
 
-        .daliTime::after {
+        .dillyDali::after {
             width: 115px;
             top: 38px;
         }
