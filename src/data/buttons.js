@@ -23,7 +23,8 @@ const backgroundBtns = () => {
         { name: 'kehinde-wiley', label: 'Kehinde Wiley'},
         { name: 'rothko', label: 'Rothko, Emerald Bay'},
         { name: 'van-gogh', label: 'Van Gogh, Almond Blossoms'},
-        { name: 'okeeffe', label: "O'Keeffe, Red Canna"}
+        { name: 'okeeffe', label: "O'Keeffe, Red Canna"},
+        { name: 'green-screen', label: "Cathode Ray Throwback, Green on Black"}
     ]
 
     let btns = []
