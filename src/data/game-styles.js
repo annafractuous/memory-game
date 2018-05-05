@@ -1,3 +1,5 @@
+import styles from '../components/Cards/Cards.scss'
+
 const imagesPath = '/assets/images/backgrounds'
 
 const gameStyles = {
@@ -30,6 +32,30 @@ const gameStyles = {
         img: `${imagesPath}/okeeffe.jpg`,
         pageColor: '#fff1d0',
         cardColor: '#dc244e'
+    },
+    'green-screen': {
+        img: `${imagesPath}/green-screen.jpg`,
+        pageColor: '#101b0f',
+        cardColor: 'black',
+        extraStyles: {
+            back: {
+                backgroundPosition: 'left center',
+                position: 'absolute',
+                top: '0',
+                left: '0',
+                right: '0',
+                bottom: '0',
+                margin: 'auto',
+                animationName: styles.greenScreen,
+                animationDuration: '1s',
+                animationTimingFunction: 'steps(5)',
+                animationIterationCount: 'infinite'
+            },
+            front: {
+                color: '#58c658',
+                border: '1px dotted #58c658'
+            }
+        }
     }
 }
 

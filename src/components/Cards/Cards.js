@@ -16,13 +16,23 @@ class Card extends React.Component {
 		this.props.handleClick(this.props.value, this.props.idx)
 	}
 
-	render() {
-        const backStyle = {
+    getCardStyles() {
+        const extraStyles = gameStyles[this.props.background].extraStyles
+        const extraBackStyles = extraStyles && extraStyles.back ? extraStyles.back : {}
+        const extraFrontStyles = extraStyles && extraStyles.front ? extraStyles.front : {}
+        
+        const backStyle = Object.assign({
             backgroundImage: `url(${gameStyles[this.props.background].img})`
-        }
-        const frontStyle = {
+        }, extraBackStyles)
+        const frontStyle = Object.assign({
             backgroundColor: gameStyles[this.props.background].cardColor
-        }
+        }, extraFrontStyles)
+
+        return [backStyle, frontStyle]
+    }
+
+	render() {
+        const [backStyle, frontStyle] = this.getCardStyles()
 		const cardClass = classNames([styles.cardContainer], {
             [styles.active]: this.props.active,
             [styles.flipped]: this.props.flipped
@@ -58,7 +68,8 @@ class Cards extends React.Component {
 			pairingCards: [],
 			pairsMade: [],
 			pairsRemaining: this.props.cards.length / 2,
-			moves: 0
+			moves: 0,
+            movesSinceMatch: 0
 		}
 		this.cards = this.shuffleCards()
 
@@ -112,23 +123,26 @@ class Cards extends React.Component {
 	checkMatch(card) {
 		const pairingCards = [...this.state.pairingCards, card]
         const moves = this.state.moves + 1
-        let pairsMade, pairsRemaining, callback
+        let pairsMade, pairsRemaining, callback, movesSinceMatch
 
 		if (!this.matchMade(card)) {
             pairsMade = this.state.pairsMade
             pairsRemaining = this.state.pairsRemaining
             callback = this.flipBack
+            movesSinceMatch = this.state.movesSinceMatch + 1
         } else {
             pairsMade = [...this.state.pairsMade, card.value]
             pairsRemaining = this.state.pairsRemaining - 1
             callback = this.checkPairs
+            movesSinceMatch = 0
         }
 
         this.setState({
             pairingCards: pairingCards,
             pairsMade: pairsMade,
             pairsRemaining: pairsRemaining,
-            moves: moves
+            moves: moves,
+            movesSinceMatch: movesSinceMatch
         }, callback)
 	}
 
@@ -142,10 +156,22 @@ class Cards extends React.Component {
     }
 
     flipBack(endGame) {
-        const callback = endGame ? () => this.props.setMoves(this.state.moves) : null
+        let callback, movesSinceMatch
+        if (endGame) {
+            movesSinceMatch = 0
+            callback = () => this.props.setMoves(this.state.moves)
+        } else if (this.state.movesSinceMatch > 4) {
+            movesSinceMatch = 0
+            callback = () => this.props.dillyDali()
+        } else {
+            movesSinceMatch = this.state.movesSinceMatch
+            callback = null
+        }
+
         setTimeout(() => {
             this.setState({
-                pairingCards: []
+                pairingCards: [],
+                movesSinceMatch: movesSinceMatch
             }, callback)
             document.activeElement.blur()   // not resetting the focus as intended
         }, 500)

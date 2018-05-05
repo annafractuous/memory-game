@@ -35,6 +35,8 @@
 
 .card {
 	position: relative;
+    height: 100%;
+    width:  100%;
 	transition: 600ms;
 	transform-style: preserve-3d;
 
@@ -107,4 +109,11 @@
     .cardContainer {
         margin: 0 25px 25px 0;        
     }
+}
+
+/**************
+*  Animation  *
+**************/
+@keyframes greenScreen {
+    100% { background-position: 20%; }
 }
