@@ -16,13 +16,23 @@ class Card extends React.Component {
 		this.props.handleClick(this.props.value, this.props.idx)
 	}
 
-	render() {
-        const backStyle = {
+    getCardStyles() {
+        const extraStyles = gameStyles[this.props.background].extraStyles
+        const extraBackStyles = extraStyles && extraStyles.back ? extraStyles.back : {}
+        const extraFrontStyles = extraStyles && extraStyles.front ? extraStyles.front : {}
+        
+        const backStyle = Object.assign({
             backgroundImage: `url(${gameStyles[this.props.background].img})`
-        }
-        const frontStyle = {
+        }, extraBackStyles)
+        const frontStyle = Object.assign({
             backgroundColor: gameStyles[this.props.background].cardColor
-        }
+        }, extraFrontStyles)
+
+        return [backStyle, frontStyle]
+    }
+
+	render() {
+        const [backStyle, frontStyle] = this.getCardStyles()
 		const cardClass = classNames([styles.cardContainer], {
             [styles.active]: this.props.active,
             [styles.flipped]: this.props.flipped
