@@ -28,17 +28,18 @@ Welcome.propTypes = {
 }
 
 const Summary = props => {
+    const playAgain = 'Play Again';
     return (
         <section className={styles.summary}>
             <p className={styles.text}>Done! You won the game with {props.moves} moves in {props.time}.</p>
             <div>
                 <Button
                     btnClass='defaultButton'
-                    value='Play Again'
-                    label='Play Again'
-                    text='Play Again'
-                    style={{}}
-                    onClick={props.handleSelect}
+                    value={playAgain} 
+                    label={playAgain} 
+                    text={playAgain} 
+                    style={{}} 
+                    onClick={props.handleSelect} 
                 />
             </div>
         </section>
