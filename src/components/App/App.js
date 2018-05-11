@@ -1,7 +1,6 @@
 import React from 'react'
 import Message from '../Message/Message'
 import Game from '../Game/Game'
-import classNames from 'classnames'
 
 import gameStyles from '../../data/game-styles.js';
 import styles from './App.scss'
@@ -15,13 +14,11 @@ class App extends React.Component {
 			difficulty: '',
 			background: '',
             totalTime: '0:00',
-            totalMoves: 0,
-            dillyDali: false
+            totalMoves: 0
 		}
 
         this.setMoves = this.setMoves.bind(this)
         this.setTime = this.setTime.bind(this)
-        this.dillyDali = this.dillyDali.bind(this)
         this.handleUserSelection = this.handleUserSelection.bind(this)
 	}
 
@@ -67,21 +64,6 @@ class App extends React.Component {
 		})
 	}
 
-    dillyDali() {
-        this.setState({
-            dillyDali: true
-        }, this.stopDali)
-    }
-
-    stopDali() {
-        const dillyDali = setTimeout(() => {
-            clearTimeout(dillyDali)
-            this.setState({
-                dillyDali: false
-            })
-        }, 3000)
-    }
-
     setMoves(moves) {
         this.setState({
             totalMoves: moves
@@ -110,16 +92,12 @@ class App extends React.Component {
         const style = {
             backgroundColor: bgColor
         }
-        const appClass = classNames([styles.memoryGame], {
-            [styles.dillyDali]: this.state.dillyDali
-        })
         const component = this.state.gamePlay ? 
             <Game 
                 difficulty={this.state.difficulty} 
                 background={this.state.background} 
                 setMoves={this.setMoves} 
                 setTime={this.setTime} 
-                dillyDali={this.dillyDali} 
             /> :
             <Message 
                 gameState={this.state.gameState} 
@@ -129,8 +107,7 @@ class App extends React.Component {
             />
 		
         return (
-            <div className={appClass} style={style}>
-                <div className={styles.dali}></div>
+            <div className={styles.memoryGame} style={style}>
                 {component}
             </div>
         )

@@ -4,6 +4,7 @@ import Header from '../Header/Header'
 import Timer from '../Timer/Timer'
 import Cards from '../Cards/Cards'
 
+import classNames from 'classnames'
 import styles from './Game.scss'
 
 const GameDisplay = props => {
@@ -23,7 +24,8 @@ class GamePlay extends React.Component {
     constructor(props) {
         super(props)
 		this.state = {
-            gamePlay: false
+            gamePlay: false,
+            dillyDali: false
 		}
 
         this.startGame = this.startGame.bind(this)        
@@ -39,7 +41,18 @@ class GamePlay extends React.Component {
     }
 
     dillyDali() {
-        this.props.dillyDali()
+        this.setState({
+            dillyDali: true
+        }, this.stopDali)
+    }
+
+    stopDali() {
+        const dillyDali = setTimeout(() => {
+            clearTimeout(dillyDali)
+            this.setState({
+                dillyDali: false
+            })
+        }, 3000)
     }
 
 	setMoves(moves) {
@@ -54,8 +67,12 @@ class GamePlay extends React.Component {
 	}
 
     render() {
+        const daliClass = classNames({ 
+            [styles.dillyDali]: this.state.dillyDali 
+        })
         return (
-            <section>
+            <section className={daliClass}>
+                <div className={styles.dali}></div>                
                 <Timer 
                     gamePlay={this.state.gamePlay} 
                     setTime={this.setTime} 
@@ -87,9 +104,8 @@ class Game extends React.Component {
 			cards: null
 		}
        
-        this.setMoves = this.props.setMoves.bind(this)        
-        this.setTime = this.props.setTime.bind(this)        
-        this.dillyDali = this.props.dillyDali.bind(this)        
+        this.setMoves = this.props.setMoves.bind(this)
+        this.setTime = this.props.setTime.bind(this)     
     }
 
 	componentDidMount() {
@@ -128,7 +144,6 @@ class Game extends React.Component {
                     background={this.props.background} 
                     setMoves={this.setMoves} 
                     setTime={this.setTime} 
-                    dillyDali={this.dillyDali} 
                 />
         } else {
             component = 
