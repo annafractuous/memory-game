@@ -64,25 +64,7 @@ class Message extends React.Component {
     constructor(props) {
         super(props)
 
-        this.selectDifficulty = this.selectDifficulty.bind(this)
-        this.selectBackground = this.selectBackground.bind(this)
         this.restartGame = this.restartGame.bind(this)
-    }
-
-    selectDifficulty(value) {
-        const selectionObject = {
-            type: 'difficulty',
-            value: value
-        }
-        this.props.handleUserSelection(selectionObject)
-    }
-
-    selectBackground(value) {
-        const selectionObject = {
-            type: 'background',
-            value: value
-        }
-        this.props.handleUserSelection(selectionObject)
     }
 
     restartGame() {
@@ -111,7 +93,7 @@ class Message extends React.Component {
 }
 Message.propTypes = {
     gameState: PropTypes.string.isRequired,
-    handleUserSelection: PropTypes.func.isRequired,
+    // handleUserSelection: PropTypes.func.isRequired,
     moves: PropTypes.number,
     time: PropTypes.string
 }

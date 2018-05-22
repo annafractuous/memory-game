@@ -1,7 +1,7 @@
 import { SELECT_DIFFICULTY, SELECT_BACKGROUND } from '../actions/action-types'
 
 const initialState = {
-    difficulty: 'easy',
+    difficulty: '',
     background: ''
 }
 

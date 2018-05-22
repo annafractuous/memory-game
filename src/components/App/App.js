@@ -1,18 +1,17 @@
 import React from 'react'
 import Message from '../Message/Message'
 import Game from '../Game/Game'
+import { connect } from 'react-redux'
 
 import gameStyles from '../../data/game-styles.js';
 import styles from './App.scss'
 
-class App extends React.Component {
+class ConnectedApp extends React.Component {
 	constructor() {
 		super()
 		this.state = {
 			gamePlay: false,
 			gameState: 'start',
-			difficulty: '',
-			background: '',
             totalTime: '0:00',
             totalMoves: 0
 		}
@@ -21,6 +20,11 @@ class App extends React.Component {
         this.setTime = this.setTime.bind(this)
         this.handleUserSelection = this.handleUserSelection.bind(this)
 	}
+
+    componentWillReceiveProps(nextProps) {
+        console.log('nextProps: ', nextProps)
+        this.gamePlayCheck(nextProps)
+    }
 
 	handleUserSelection(selection) {
         switch (selection.type) {
@@ -36,20 +40,8 @@ class App extends React.Component {
         }
 	}
 
-	selectDifficulty(difficulty) {
-		this.setState({
-			difficulty: difficulty
-		}, this.startGame)
-	}
-
-	selectBackground(background) {
-		this.setState({
-			background: background
-		}, this.startGame)
-	}
-
-    startGame() {
-        if (this.state.background !== '' && this.state.difficulty !== '') {
+    gamePlayCheck(nextProps) {
+        if (nextProps.background !== '' && nextProps.difficulty !== '') {
             this.setState({
                 gamePlay: true
             })
@@ -88,14 +80,14 @@ class App extends React.Component {
 	}
 
 	render() {
-        const bgColor = this.state.gamePlay && this.state.background.length ? gameStyles[this.state.background].pageColor : 'white'
+        const bgColor = this.state.gamePlay ? gameStyles[this.props.background].pageColor : 'white'
         const style = {
             backgroundColor: bgColor
         }
         const component = this.state.gamePlay ? 
             <Game 
-                difficulty={this.state.difficulty} 
-                background={this.state.background} 
+                difficulty={this.props.difficulty} 
+                background={this.props.background} 
                 setMoves={this.setMoves} 
                 setTime={this.setTime} 
             /> :
@@ -103,7 +95,6 @@ class App extends React.Component {
                 gameState={this.state.gameState} 
                 moves={this.state.totalMoves} 
                 time={this.state.totalTime} 
-                handleUserSelection={this.handleUserSelection} 
             />
 		
         return (
@@ -113,5 +104,12 @@ class App extends React.Component {
         )
 	}
 }
+function mapStateToProps(state){
+    return {
+        difficulty: state.selection.difficulty,
+        background: state.selection.background
+    };
+}
+const App = connect(mapStateToProps)(ConnectedApp)
 
 export default App
