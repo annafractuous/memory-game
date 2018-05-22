@@ -3,6 +3,8 @@ import compression from 'compression'
 import path from 'path'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
+import store from '../redux/store/index'
+import { Provider } from 'react-redux'
 import App from '../components/App/App'
 import template from './template'
 
@@ -22,7 +24,7 @@ app.use(express.static(path.join(process.cwd(), KYT.PUBLIC_DIR)))
 app.get('*', (request, response) => {
   response.send(
     template({
-      html: renderToString(<App />),
+      html: renderToString(<Provider store={store}><App /></Provider>),
       manifestJSBundle: clientAssets['manifest.js'],
       mainJSBundle: clientAssets['main.js'],
       vendorJSBundle: clientAssets['vendor.js'],
