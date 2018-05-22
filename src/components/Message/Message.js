@@ -2,10 +2,18 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Header from '../Header/Header'
 import { Button, ButtonGroup } from '../Buttons/Buttons'
+import { connect } from 'react-redux'
+import { selectDifficulty, selectBackground } from '../../redux/actions/message'
 
 import styles from './Message.scss'
 
-const Welcome = props => {
+const mapDispatchToWelcomeProps = dispatch => {
+    return {
+        selectDifficulty: selection => dispatch(selectDifficulty(selection)),
+        selectBackground: selection => dispatch(selectBackground(selection))
+    };
+};
+const ConnectedWelcome = props => {
     return (
         <section className={styles.welcome}>
             <ButtonGroup 
@@ -22,10 +30,11 @@ const Welcome = props => {
         </section>
     )
 }
-Welcome.propTypes = {
+ConnectedWelcome.propTypes = {
     selectBackground: PropTypes.func.isRequired,
     selectDifficulty: PropTypes.func.isRequired
 }
+const Welcome = connect(null, mapDispatchToWelcomeProps)(ConnectedWelcome)
 
 const Summary = props => {
     const playAgain = 'Play Again';
@@ -85,10 +94,7 @@ class Message extends React.Component {
 
     render() {
         const screen = this.props.gameState === 'start' ?
-            <Welcome 
-                selectDifficulty={this.selectDifficulty}
-                selectBackground={this.selectBackground}
-            /> :
+            <Welcome /> :
             <Summary 
                 moves={this.props.moves} 
                 time={this.props.time} 
