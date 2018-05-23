@@ -1,11 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import classNames from 'classnames'
 
 import gameStyles from '../../data/game-styles.js';
 import styles from './Cards.scss'
 
-class Card extends React.Component {
+const mapStateToCardProps = state => {
+    return {
+        background: state.selection.background
+    };
+};
+class ConnectedCard extends React.Component {
     constructor(props) {
         super(props)
 
@@ -51,7 +57,7 @@ class Card extends React.Component {
 		)
 	}
 }
-Card.propTypes = {
+ConnectedCard.propTypes = {
     idx: PropTypes.number.isRequired,
     value: PropTypes.string.isRequired,
     active: PropTypes.bool.isRequired,
@@ -59,6 +65,7 @@ Card.propTypes = {
     background: PropTypes.string.isRequired,
     handleClick: PropTypes.func.isRequired
 }
+const Card = connect(mapStateToCardProps)(ConnectedCard)
 
 class Cards extends React.Component {
     constructor(props) {
@@ -192,7 +199,7 @@ class Cards extends React.Component {
                             value={card} 
                             active={active} 
                             flipped={flipped} 
-                            background={this.props.background} 
+                            // background={this.props.background} 
                             handleClick={this.handleClick} 
                             key={i} 
                         />
@@ -204,7 +211,7 @@ class Cards extends React.Component {
 }
 Cards.propTypes = {
     cards: PropTypes.array.isRequired,
-    background: PropTypes.string.isRequired,
+    // background: PropTypes.string.isRequired,
     startGame: PropTypes.func.isRequired,
     setMoves: PropTypes.func.isRequired
 }

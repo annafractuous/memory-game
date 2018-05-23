@@ -86,8 +86,8 @@ class ConnectedApp extends React.Component {
         }
         const component = this.state.gamePlay ? 
             <Game 
-                difficulty={this.props.difficulty} 
-                background={this.props.background} 
+                // difficulty={this.props.difficulty} 
+                // background={this.props.background} 
                 setMoves={this.setMoves} 
                 setTime={this.setTime} 
             /> :

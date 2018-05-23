@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Header from '../Header/Header'
 import Timer from '../Timer/Timer'
 import Cards from '../Cards/Cards'
+import { connect } from 'react-redux'
 
 import classNames from 'classnames'
 import styles from './Game.scss'
@@ -28,10 +29,10 @@ class GamePlay extends React.Component {
             dillyDali: false
 		}
 
-        this.startGame = this.startGame.bind(this)        
-        this.dillyDali = this.dillyDali.bind(this)        
-        this.setMoves = this.setMoves.bind(this)        
-        this.setTime = this.setTime.bind(this)        
+        this.startGame = this.startGame.bind(this)
+        this.dillyDali = this.dillyDali.bind(this)
+        this.setMoves = this.setMoves.bind(this)
+        this.setTime = this.setTime.bind(this)
     }
 
     startGame() {
@@ -61,7 +62,7 @@ class GamePlay extends React.Component {
             gamePlay: false
         })
 	}
-	
+
     setTime(time) {
 		this.props.setTime(time)
 	}
@@ -72,15 +73,15 @@ class GamePlay extends React.Component {
         })
         return (
             <section className={daliClass}>
-                <div className={styles.dali}></div>                
+                <div className={styles.dali}></div>
                 <Timer 
                     gamePlay={this.state.gamePlay} 
                     setTime={this.setTime} 
                 />
                 <Cards 
-                    startGame={this.startGame} 
                     cards={this.props.cards} 
-                    background={this.props.background} 
+                    // background={this.props.background} 
+                    startGame={this.startGame} 
                     setMoves={this.setMoves} 
                     dillyDali={this.dillyDali} 
                 />
@@ -92,19 +93,24 @@ GamePlay.propTypes = {
     setMoves: PropTypes.func.isRequired,
     setTime: PropTypes.func.isRequired,
     cards: PropTypes.array.isRequired,
-    background: PropTypes.string.isRequired
+    // background: PropTypes.string.isRequired
 }
 
-class Game extends React.Component {
+const mapStateToGameProps = state => {
+    return {
+        difficulty: state.selection.difficulty
+    };
+};
+class ConnectedGame extends React.Component {
     constructor(props) {
         super(props)
 		this.state = {
 			cardsLoaded: 'false',
 			cards: null
 		}
-       
+
         this.setMoves = this.props.setMoves.bind(this)
-        this.setTime = this.props.setTime.bind(this)     
+        this.setTime = this.props.setTime.bind(this)
     }
 
 	componentDidMount() {
@@ -140,7 +146,7 @@ class Game extends React.Component {
             component =
                 <GamePlay 
                     cards={cardSet} 
-                    background={this.props.background} 
+                    // background={this.props.background} 
                     setMoves={this.setMoves} 
                     setTime={this.setTime} 
                 />
@@ -157,11 +163,12 @@ class Game extends React.Component {
         )
 	}
 }
-Game.propTypes = {
+ConnectedGame.propTypes = {
     difficulty: PropTypes.string.isRequired,
-    background: PropTypes.string.isRequired,
+    // background: PropTypes.string.isRequired,
     setMoves: PropTypes.func.isRequired,
     setTime: PropTypes.func.isRequired
 }
+const Game = connect(mapStateToGameProps)(ConnectedGame)
 
 export default Game
