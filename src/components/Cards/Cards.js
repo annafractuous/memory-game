@@ -1,16 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { setPairsCount, selectPairingCard, selectCorrectCard, selectWrongCard, flipBack } from '../../redux/actions/cards'
 import classNames from 'classnames'
 
-import gameStyles from '../../data/game-styles.js';
+import gameStyles from '../../data/game-styles.js'
 import styles from './Cards.scss'
 
 const mapStateToCardProps = state => {
     return {
         background: state.selection.background
-    };
-};
+    }
+}
 class ConnectedCard extends React.Component {
     constructor(props) {
         super(props)
@@ -67,37 +68,53 @@ ConnectedCard.propTypes = {
 }
 const Card = connect(mapStateToCardProps)(ConnectedCard)
 
-class Cards extends React.Component {
+
+const mapStateToCardsProps = state => {
+    return {
+        pairingCards: state.cards.pairingCards,
+        pairsMade: state.cards.pairsMade,
+        pairsRemaining: state.cards.pairsRemaining,
+        moves: state.cards.moves,
+        wrongMoves: state.cards.wrongMoves
+    }
+}
+const mapDispatchToCardsProps = dispatch => {
+    return {
+        setPairsCount: totalPairs => dispatch(setPairsCount(totalPairs)),
+        selectPairingCard: card => dispatch(selectPairingCard(card)),
+        selectCorrectCard: card => dispatch(selectCorrectCard(card)),
+        selectWrongCard: card => dispatch(selectWrongCard(card)),
+        flipBack: wrongMoves => dispatch(flipBack(wrongMoves))
+    }
+}
+class ConnectedCards extends React.Component {
     constructor(props) {
         super(props)
 		this.state = {
-            firstCard: true,
-			pairingCards: [],
-			pairsMade: [],
-			pairsRemaining: this.props.cards.length / 2,
-			moves: 0,
-            movesSinceMatch: 0
+            firstCard: true
 		}
-		this.cards = this.shuffleCards()
+        this.shuffleCards()
 
-		this.handleClick = this.handleClick.bind(this)
+        this.props.setPairsCount(this.props.cards.length / 2)
+		
+        this.handleClick = this.handleClick.bind(this)
+
     }
 
 	shuffleCards() {
 		// Fisher-Yates shuffle
 		const cards = this.props.cards
-		let counter = cards.length;
-		let temp, randomIdx;
+		let counter = cards.length
+		let temp, randomIdx
 
 		while (counter > 0) {
-			randomIdx = Math.floor(Math.random() * counter);
-			counter--;
+			randomIdx = Math.floor(Math.random() * counter)
+			counter--
 
-			temp = cards[counter];
-			cards[counter] = cards[randomIdx];
-			cards[randomIdx] = temp;
+			temp = cards[counter]
+			cards[counter] = cards[randomIdx]
+			cards[randomIdx] = temp
 		}
-		return cards;
 	}
 
 	handleClick(value, idx) {
@@ -109,77 +126,56 @@ class Cards extends React.Component {
         if (this.state.firstCard) {
             this.startGame(card)
         } else {
-            this.state.pairingCards.length ? this.checkMatch(card) : this.setPairingCard(card)
+            this.props.pairingCards.length ? this.checkMatch(card) : this.props.selectPairingCard(card)
         }
 	}
 
     startGame(card) {
         this.props.startGame()
         this.setState({
-            firstCard: false,
-            pairingCards: [...this.state.pairingCards, card]
+            firstCard: false
         })
-    }
 
-    setPairingCard(card) {
-        this.setState({
-            pairingCards: [...this.state.pairingCards, card]
-        })
+        this.props.selectPairingCard(card)
     }
 
 	checkMatch(card) {
-		const pairingCards = [...this.state.pairingCards, card]
-        const moves = this.state.moves + 1
-        let pairsMade, pairsRemaining, callback, movesSinceMatch
+		let pairsMade, pairsRemaining, callback, wrongMoves
 
 		if (!this.matchMade(card)) {
-            pairsMade = this.state.pairsMade
-            pairsRemaining = this.state.pairsRemaining
-            callback = this.flipBack
-            movesSinceMatch = this.state.movesSinceMatch + 1
+            this.props.selectWrongCard(card)
+            this.flipBack()
         } else {
-            pairsMade = [...this.state.pairsMade, card.value]
-            pairsRemaining = this.state.pairsRemaining - 1
-            callback = this.checkPairs
-            movesSinceMatch = 0
+            this.props.selectCorrectCard(card)
+            this.checkPairs()
         }
-
-        this.setState({
-            pairingCards: pairingCards,
-            pairsMade: pairsMade,
-            pairsRemaining: pairsRemaining,
-            moves: moves,
-            movesSinceMatch: movesSinceMatch
-        }, callback)
 	}
 
     matchMade(card) {
-        const matchingCard = this.state.pairingCards.find((c) => c.value === card.value)
+        const matchingCard = this.props.pairingCards.find((c) => c.value === card.value)
         return !!matchingCard
     }
 
     checkPairs() {
-        this.state.pairsRemaining ? this.flipBack() : this.flipBack(true)
+        this.props.pairsRemaining ? this.flipBack() : this.flipBack(true)
     }
 
     flipBack(endGame) {
-        let callback, movesSinceMatch
+        let callback, wrongMoves
         if (endGame) {
-            movesSinceMatch = 0
-            callback = () => this.props.setMoves(this.state.moves)
-        } else if (this.state.movesSinceMatch > 4) {
-            movesSinceMatch = 0
+            wrongMoves = 0
+            callback = () => this.props.setMoves(this.props.moves)
+        } else if (this.props.wrongMoves > 4) {
+            wrongMoves = 0
             callback = () => this.props.dillyDali()
         } else {
-            movesSinceMatch = this.state.movesSinceMatch
+            wrongMoves = this.props.wrongMoves
             callback = null
         }
 
         setTimeout(() => {
-            this.setState({
-                pairingCards: [],
-                movesSinceMatch: movesSinceMatch
-            }, callback)
+            this.props.flipBack(wrongMoves)
+            callback === null || callback()
             document.activeElement.blur()   // not resetting the focus as intended
         }, 500)
     }
@@ -191,15 +187,14 @@ class Cards extends React.Component {
         return (
 			<div className={containerClass}>
 				{this.props.cards.map((card, i) => {
-                    const active = !this.state.pairsMade.includes(card)
-					const flipped = !!this.state.pairingCards.find((c) => c.idx === i)
+                    const active = !this.props.pairsMade.includes(card)
+					const flipped = !!this.props.pairingCards.find((c) => c.idx === i)
 					return (
                         <Card 
                             idx={i} 
                             value={card} 
                             active={active} 
                             flipped={flipped} 
-                            // background={this.props.background} 
                             handleClick={this.handleClick} 
                             key={i} 
                         />
@@ -209,11 +204,10 @@ class Cards extends React.Component {
 		)
 	}
 }
-Cards.propTypes = {
+ConnectedCards.propTypes = {
     cards: PropTypes.array.isRequired,
-    // background: PropTypes.string.isRequired,
-    startGame: PropTypes.func.isRequired,
     setMoves: PropTypes.func.isRequired
 }
+const Cards = connect(mapStateToCardsProps, mapDispatchToCardsProps)(ConnectedCards)
 
 export default Cards

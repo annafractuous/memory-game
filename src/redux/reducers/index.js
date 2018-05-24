@@ -1,26 +1,44 @@
-import { combineReducers } from "redux";
-import { selectionReducer } from "./message";
+import { combineReducers } from "redux"
+import { selectionReducer } from "./selection"
+import { cardsReducer } from "./cards"
 
 // const initialState = {
-// 	   gameActive: false,
-//     gameState: 'start',
-//     difficulty: 'easy',
-//     background: '',
-//     totalTime: '0:00',
-//     totalMoves: 0,
-//     cardsLoaded: false,
-//     cards: {},
-//     gamePlay: false,
-//     dillyDali: false,
-//     pairingCards: [],
-//     pairsMade: [],
-//     pairsRemaining: null,
-//     moves: 0,
-//     movesSinceMatch: 0
+//     gameState: {
+//         showGame: false,        // gamePlay in App
+//         gameActive: false,      // use in Timer
+//         gameOver: false         // currently gameState ('start' or 'complete'), use in Message
+//     },
+//     selection: {
+//         difficulty: '',
+//         background: ''
+//     },
+//     summary: {
+//         totalTime: '0:00',
+//         totalMoves: 0
+//     },
+//     buttonGroup: {
+//         selected: null
+//     },
+//     game: {
+//         cardsLoaded: false,
+//         cards: null
+//     },
+//     gamePlay: {
+//         dillyDali: false
+//     },
+//     cards: {
+//         firstCard: true,
+//         pairingCards: [],
+//         pairsMade: [],
+//         pairsRemaining: null,
+//         moves: 0,
+//         movesSinceMatch: 0
+//     }
 // }
 
 const rootReducer = combineReducers({
-    selection: selectionReducer
+    selection: selectionReducer,
+    cards: cardsReducer
 })
 
-export default rootReducer;
+export default rootReducer
