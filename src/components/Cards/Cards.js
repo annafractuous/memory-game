@@ -164,20 +164,17 @@ class ConnectedCards extends React.Component {
     }
 
     flipBack(endGame) {
-        let callback, wrongMoves
+        let callback
         if (endGame) {
-            wrongMoves = 0
             callback = () => this.props.setMoves(this.props.moves)
         } else if (this.props.wrongMoves > 4) {
-            wrongMoves = 0
             callback = () => this.props.dillyDali()
         } else {
-            wrongMoves = this.props.wrongMoves
             callback = null
         }
 
         setTimeout(() => {
-            this.props.flipBack(wrongMoves)
+            this.props.flipBack()
             callback === null || callback()
             document.activeElement.blur()   // not resetting the focus as intended
         }, 500)

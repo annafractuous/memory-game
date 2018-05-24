@@ -20,7 +20,6 @@ export const selectWrongCard = card => ({
     card: card
 })
 
-export const flipBack = wrongMoves => ({
-    type: FLIP_BACK,
-    wrongMoves: wrongMoves
+export const flipBack = () => ({
+    type: FLIP_BACK
 })

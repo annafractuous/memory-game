@@ -26,19 +26,21 @@ export const cardsReducer = (state = initialState, action) => {
                 pairingCards: [...state.pairingCards, action.card],
                 pairsMade: [...state.pairsMade, action.card.value],
                 pairsRemaining: state.pairsRemaining - 1,
-                moves: state.moves + 1
+                moves: state.moves + 1,
+                wrongMoves: 0
             }
         case SELECT_WRONG_CARD:
+            const wrongMoves = state.wrongMoves > 4 ? 0 : state.wrongMoves + 1
             return {
                 ...state,
                 pairingCards: [...state.pairingCards, action.card],
-                moves: state.moves + 1
+                moves: state.moves + 1,
+                wrongMoves: wrongMoves
             }
         case FLIP_BACK:
             return {
                 ...state,
-                pairingCards: [],
-                wrongMoves: action.wrongMoves
+                pairingCards: []
             }
         default:
             return state
