@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import buttons from '../../data/buttons.js';
+import buttons from '../../data/buttons.js'
 import styles from './Buttons.scss'
 
 const Button = props => {

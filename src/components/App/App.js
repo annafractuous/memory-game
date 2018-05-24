@@ -3,7 +3,7 @@ import Message from '../Message/Message'
 import Game from '../Game/Game'
 import { connect } from 'react-redux'
 
-import gameStyles from '../../data/game-styles.js';
+import gameStyles from '../../data/game-styles.js'
 import styles from './App.scss'
 
 class ConnectedApp extends React.Component {
@@ -108,7 +108,7 @@ function mapStateToProps(state){
     return {
         difficulty: state.selection.difficulty,
         background: state.selection.background
-    };
+    }
 }
 const App = connect(mapStateToProps)(ConnectedApp)
 

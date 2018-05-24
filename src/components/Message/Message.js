@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Header from '../Header/Header'
 import { Button, ButtonGroup } from '../Buttons/Buttons'
 import { connect } from 'react-redux'
-import { selectDifficulty, selectBackground } from '../../redux/actions/message'
+import { selectDifficulty, selectBackground } from '../../redux/actions/selection'
 
 import styles from './Message.scss'
 
@@ -11,8 +11,8 @@ const mapDispatchToWelcomeProps = dispatch => {
     return {
         selectDifficulty: selection => dispatch(selectDifficulty(selection)),
         selectBackground: selection => dispatch(selectBackground(selection))
-    };
-};
+    }
+}
 const ConnectedWelcome = props => {
     return (
         <section className={styles.welcome}>
@@ -37,7 +37,7 @@ ConnectedWelcome.propTypes = {
 const Welcome = connect(null, mapDispatchToWelcomeProps)(ConnectedWelcome)
 
 const Summary = props => {
-    const playAgain = 'Play Again';
+    const playAgain = 'Play Again'
     return (
         <section className={styles.summary}>
             <p className={styles.text}>Done! You won the game with {props.moves} moves in {props.time}.</p>
