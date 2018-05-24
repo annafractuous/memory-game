@@ -13,7 +13,7 @@ export const gamestateReducer = (state = initialState, action) => {
         case TOGGLE_GAME_ACTIVE:
             return { ...state, gameActive: action.value }
         case TOGGLE_GAME_OVER:
-            return { ...state, gaveOver: action.value }
+            return { ...state, gameOver: action.value }
         default:
             return state
     }

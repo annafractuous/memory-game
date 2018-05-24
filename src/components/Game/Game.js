@@ -25,20 +25,12 @@ class GamePlay extends React.Component {
     constructor(props) {
         super(props)
 		this.state = {
-            gamePlay: false,
             dillyDali: false
 		}
 
-        this.startGame = this.startGame.bind(this)
         this.dillyDali = this.dillyDali.bind(this)
         this.setMoves = this.setMoves.bind(this)
         this.setTime = this.setTime.bind(this)
-    }
-
-    startGame() {
-        this.setState({
-            gamePlay: true
-        })
     }
 
     dillyDali() {
@@ -58,9 +50,6 @@ class GamePlay extends React.Component {
 
 	setMoves(moves) {
 		this.props.setMoves(moves)
-        this.setState({
-            gamePlay: false
-        })
 	}
 
     setTime(time) {
@@ -74,14 +63,9 @@ class GamePlay extends React.Component {
         return (
             <section className={daliClass}>
                 <div className={styles.dali}></div>
-                <Timer 
-                    gamePlay={this.state.gamePlay} 
-                    setTime={this.setTime} 
-                />
+                <Timer setTime={this.setTime} />
                 <Cards 
                     cards={this.props.cards} 
-                    // background={this.props.background} 
-                    startGame={this.startGame} 
                     setMoves={this.setMoves} 
                     dillyDali={this.dillyDali} 
                 />
@@ -92,15 +76,14 @@ class GamePlay extends React.Component {
 GamePlay.propTypes = {
     setMoves: PropTypes.func.isRequired,
     setTime: PropTypes.func.isRequired,
-    cards: PropTypes.array.isRequired,
-    // background: PropTypes.string.isRequired
+    cards: PropTypes.array.isRequired
 }
 
 const mapStateToGameProps = state => {
     return {
         difficulty: state.selection.difficulty
-    };
-};
+    }
+}
 class ConnectedGame extends React.Component {
     constructor(props) {
         super(props)
@@ -118,7 +101,7 @@ class ConnectedGame extends React.Component {
 		fetch(cardsJSON)
 			.then(response => response.json())
 			.then(data => this.setCards(data))
-			.catch(error => this.handleError(error));
+			.catch(error => this.handleError(error))
 	}
 
 	handleError(error) {
@@ -146,7 +129,6 @@ class ConnectedGame extends React.Component {
             component =
                 <GamePlay 
                     cards={cardSet} 
-                    // background={this.props.background} 
                     setMoves={this.setMoves} 
                     setTime={this.setTime} 
                 />
@@ -165,7 +147,6 @@ class ConnectedGame extends React.Component {
 }
 ConnectedGame.propTypes = {
     difficulty: PropTypes.string.isRequired,
-    // background: PropTypes.string.isRequired,
     setMoves: PropTypes.func.isRequired,
     setTime: PropTypes.func.isRequired
 }

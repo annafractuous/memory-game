@@ -143,15 +143,8 @@ class ConnectedCards extends React.Component {
     }
 
 	checkMatch(card) {
-		let pairsMade, pairsRemaining, callback, wrongMoves
-
-		if (!this.matchMade(card)) {
-            this.props.selectWrongCard(card)
-            this.flipBack()
-        } else {
-            this.props.selectCorrectCard(card)
-            this.checkPairs()
-        }
+		this.matchMade(card) ? this.props.selectCorrectCard(card) : this.props.selectWrongCard(card)
+        this.flipBack()
 	}
 
     matchMade(card) {
@@ -159,25 +152,24 @@ class ConnectedCards extends React.Component {
         return !!matchingCard
     }
 
-    checkPairs() {
-        this.props.pairsRemaining ? this.flipBack() : this.flipBack(true)
+    gameOver() {
+        this.props.toggleGameActive(false)
+        this.props.toggleGameOver(true)
+        this.props.setMoves(this.props.moves)
     }
 
-    flipBack(endGame) {
-        let callback
-        if (endGame) {
-            callback = () => this.props.setMoves(this.props.moves)
-        } else if (this.props.wrongMoves > 4) {
-            callback = () => this.props.dillyDali()
-        } else {
-            callback = null
-        }
-
-        setTimeout(() => {
+    flipBack() {
+        setTimeout(function() {
             this.props.flipBack()
-            callback === null || callback()
+
+            if (this.props.wrongMoves > 4) {
+                this.props.dillyDali()
+            } else if (!this.props.pairsRemaining) {
+                this.gameOver()
+            }
+            
             document.activeElement.blur()   // not resetting the focus as intended
-        }, 500)
+        }.bind(this), 500)
     }
 
 	render() {
