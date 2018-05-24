@@ -1,3 +1,8 @@
+// Game State Actions
+export const TOGGLE_GAME_VIEW    = 'TOGGLE_GAME_VIEW'
+export const TOGGLE_GAME_ACTIVE  = 'TOGGLE_GAME_ACTIVE'
+export const TOGGLE_GAME_OVER    = 'TOGGLE_GAME_OVER'
+
 // Selection Actions
 export const SELECT_DIFFICULTY   = 'SELECT_DIFFICULTY'
 export const SELECT_BACKGROUND   = 'SELECT_BACKGROUND'

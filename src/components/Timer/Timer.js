@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 
 import styles from './Timer.scss'
 
@@ -31,7 +32,12 @@ Timer.propTypes = {
 	time: PropTypes.number,
 }
 
-class TimerContainer extends React.Component {
+const mapStateToTimerProps = state => {
+    return {
+        gameActive: state.gameState.gameActive
+    }
+}
+class ConnectedTimerContainer extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -40,9 +46,9 @@ class TimerContainer extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.gamePlay && !this.interval) {
+		if (nextProps.gameActive && !this.interval) {
 			this.interval = setInterval(this.tick.bind(this), 1000)
-		} else if (this.props.gamePlay && !nextProps.gamePlay) {
+		} else if (this.props.gameActive && !nextProps.gameActive) {
 			this.props.setTime(formatTime(this.state.secondsElapsed))
 		}
 	}
@@ -61,9 +67,10 @@ class TimerContainer extends React.Component {
 		return <Timer time={this.state.secondsElapsed} />
 	}
 }
-TimerContainer.propTypes = {
+ConnectedTimerContainer.propTypes = {
 	setTime: PropTypes.func.isRequired,
-	gamePlay: PropTypes.bool.isRequired
+	gameActive: PropTypes.bool.isRequired
 }
+const TimerContainer = connect(mapStateToTimerProps)(ConnectedTimerContainer)
 
 export default TimerContainer

@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { toggleGameActive, toggleGameOver } from '../../redux/actions/game-state'
 import { setPairsCount, selectPairingCard, selectCorrectCard, selectWrongCard, flipBack } from '../../redux/actions/cards'
 import classNames from 'classnames'
 
@@ -84,7 +85,9 @@ const mapDispatchToCardsProps = dispatch => {
         selectPairingCard: card => dispatch(selectPairingCard(card)),
         selectCorrectCard: card => dispatch(selectCorrectCard(card)),
         selectWrongCard: card => dispatch(selectWrongCard(card)),
-        flipBack: wrongMoves => dispatch(flipBack(wrongMoves))
+        flipBack: wrongMoves => dispatch(flipBack(wrongMoves)),
+        toggleGameActive: value => dispatch(toggleGameActive(value)),
+        toggleGameOver: value => dispatch(toggleGameOver(value))
     }
 }
 class ConnectedCards extends React.Component {
@@ -131,11 +134,11 @@ class ConnectedCards extends React.Component {
 	}
 
     startGame(card) {
-        this.props.startGame()
         this.setState({
             firstCard: false
         })
-
+        
+        this.props.toggleGameActive(true)
         this.props.selectPairingCard(card)
     }
 
