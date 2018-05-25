@@ -1,4 +1,4 @@
-import { TOGGLE_GAME_VIEW, TOGGLE_GAME_ACTIVE, TOGGLE_GAME_OVER } from '../actions/action-types'
+import { TOGGLE_SHOW_GAME, TOGGLE_GAME_ACTIVE, TOGGLE_GAME_OVER, END_GAME, RESTART_GAME } from '../actions/action-types'
 
 const initialState = {
     showGame: false,
@@ -8,12 +8,25 @@ const initialState = {
 
 export const gamestateReducer = (state = initialState, action) => {
     switch (action.type) {
-        case TOGGLE_GAME_VIEW:
+        case TOGGLE_SHOW_GAME:
             return { ...state, showGame: action.value }
         case TOGGLE_GAME_ACTIVE:
             return { ...state, gameActive: action.value }
         case TOGGLE_GAME_OVER:
             return { ...state, gameOver: action.value }
+        case END_GAME:
+            return { 
+                ...state, 
+                showGame: false,
+                gameActive: false,
+                gameOver: true
+            }
+        case RESTART_GAME:
+            return { 
+                ...state, 
+                showGame: true,
+                gameOver: false
+            }
         default:
             return state
     }

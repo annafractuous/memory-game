@@ -1,4 +1,4 @@
-import { SET_PAIRS_COUNT, SELECT_PAIRING_CARD, SELECT_CORRECT_CARD, SELECT_WRONG_CARD, FLIP_BACK } from '../actions/action-types'
+import { SET_PAIRS_COUNT, SELECT_PAIRING_CARD, SELECT_CORRECT_CARD, SELECT_WRONG_CARD, FLIP_BACK, RESET_CARD_STATE } from '../actions/action-types'
 
 const initialState = {
     pairingCards: [],
@@ -41,6 +41,11 @@ export const cardsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 pairingCards: []
+            }
+        case RESET_CARD_STATE:
+            return {
+                ...state,
+                initialState
             }
         default:
             return state
