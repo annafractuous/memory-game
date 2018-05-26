@@ -5,7 +5,7 @@ import Game from '../Game/Game'
 
 import { connect } from 'react-redux'
 import { toggleShowGame } from '../../redux/actions/game-state'
-import store from '../../redux/store/index'
+// import store from '../../redux/store/index'
 
 import gameStyles from '../../data/game-styles.js'
 import styles from './App.scss'
