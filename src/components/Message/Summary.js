@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Header from '../Header/Header'
 import { Button, ButtonGroup } from '../Buttons/Buttons'
 
 import { connect } from 'react-redux'
