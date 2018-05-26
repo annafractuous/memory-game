@@ -1,11 +1,30 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Message from '../Message/Message'
 import Game from '../Game/Game'
 import { connect } from 'react-redux'
+import { toggleShowGame } from '../../redux/actions/game-state'
+import store from '../../redux/store/index'
 
 import gameStyles from '../../data/game-styles.js'
 import styles from './App.scss'
 
+
+const mapStateToProps = state => {
+    return {
+        gameOver: state.gameState.gameOver,
+        showGame: state.gameState.showGame,
+        difficulty: state.selection.difficulty,
+        background: state.selection.background,
+        totalTime: state.summary.time,
+        totalMoves: state.summary.moves
+    }
+}
+const mapDispatchToProps = dispatch => {
+    return {
+        toggleShowGame: bool => dispatch(toggleShowGame(bool))
+    }
+}
 class ConnectedApp extends React.Component {
 	constructor() {
 		super()
@@ -22,8 +41,7 @@ class ConnectedApp extends React.Component {
 	}
 
     componentWillReceiveProps(nextProps) {
-        console.log('nextProps: ', nextProps)
-        this.gamePlayCheck(nextProps)
+        this.showGameCheck(nextProps)
     }
 
 	handleUserSelection(selection) {
@@ -40,11 +58,12 @@ class ConnectedApp extends React.Component {
         }
 	}
 
-    gamePlayCheck(nextProps) {
-        if (nextProps.background !== '' && nextProps.difficulty !== '') {
-            this.setState({
-                gamePlay: true
-            })
+    showGameCheck(nextProps) {
+        if (!nextProps.gameOver && nextProps.background !== '' && nextProps.difficulty !== '') {
+            this.props.toggleShowGame(true)
+        }
+        else if (nextProps.gameOver && nextProps.totalTime !== '0:00' && nextProps.totalMoves !== 0) {
+            this.props.toggleShowGame(false)
         }
     }
 
@@ -70,24 +89,25 @@ class ConnectedApp extends React.Component {
 
 	completeGame() {
         if (this.state.totalMoves !== 0 && this.state.totalTime !== '0:00') {
-            this.setState({
-                gamePlay: false,
-                gameState: 'complete',
-                difficulty: '',
-                background: ''
-            })
+            // this.setState({
+            //     gamePlay: false,
+            //     gameState: 'complete',
+            //     difficulty: '',
+            //     background: ''
+            // })
+            this.props.toggleShowGame(false)
         }
 	}
 
 	render() {
-        const bgColor = this.state.gamePlay ? gameStyles[this.props.background].pageColor : 'white'
+        // window.store = store;
+        const bgColor = this.props.showGame ? gameStyles[this.props.background].pageColor : 'white'
         const style = {
             backgroundColor: bgColor
         }
-        const component = this.state.gamePlay ? 
+        console.log(this.props)
+        const component = this.props.showGame ? 
             <Game 
-                // difficulty={this.props.difficulty} 
-                // background={this.props.background} 
                 setMoves={this.setMoves} 
                 setTime={this.setTime} 
             /> :
@@ -104,12 +124,11 @@ class ConnectedApp extends React.Component {
         )
 	}
 }
-function mapStateToProps(state){
-    return {
-        difficulty: state.selection.difficulty,
-        background: state.selection.background
-    }
+ConnectedApp.propTypes = {
+    showGame: PropTypes.bool.isRequired,
+    // difficulty: PropTypes.string.isRequired,
+    background: PropTypes.string.isRequired
 }
-const App = connect(mapStateToProps)(ConnectedApp)
+const App = connect(mapStateToProps, mapDispatchToProps)(ConnectedApp)
 
 export default App

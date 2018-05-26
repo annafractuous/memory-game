@@ -4,13 +4,17 @@ import Header from '../Header/Header'
 import { Button, ButtonGroup } from '../Buttons/Buttons'
 import { connect } from 'react-redux'
 import { selectDifficulty, selectBackground } from '../../redux/actions/selection'
+import { resetCardState } from '../../redux/actions/cards'
+import { clearSelections } from '../../redux/actions/selection'
+import { toggleShowGame, toggleGameOver } from '../../redux/actions/game-state'
 
 import styles from './Message.scss'
 
 const mapDispatchToWelcomeProps = dispatch => {
     return {
         selectDifficulty: selection => dispatch(selectDifficulty(selection)),
-        selectBackground: selection => dispatch(selectBackground(selection))
+        selectBackground: selection => dispatch(selectBackground(selection)),
+        toggleShowGame: bool => dispatch(toggleShowGame(bool))        
     }
 }
 const ConnectedWelcome = props => {
@@ -36,11 +40,31 @@ ConnectedWelcome.propTypes = {
 }
 const Welcome = connect(null, mapDispatchToWelcomeProps)(ConnectedWelcome)
 
-const Summary = props => {
+
+const mapStateToSummaryProps = state => {
+    return {
+        totalTime: state.summary.time,
+        totalMoves: state.summary.moves
+    }
+}
+const mapDispatchToSummaryProps = dispatch => {
+    return {
+        toggleGameOver: bool => dispatch(toggleGameOver(bool)),
+        clearSelections: () => dispatch(clearSelections()),
+        resetCardState: () => dispatch(resetCardState())
+    }
+}
+const ConnectedSummary = props => {
+    const onPlayAgain = () => {
+        props.toggleGameOver(false)
+        props.clearSelections()
+        props.resetCardState()
+    }
+
     const playAgain = 'Play Again'
     return (
         <section className={styles.summary}>
-            <p className={styles.text}>Done! You won the game with {props.moves} moves in {props.time}.</p>
+            <p className={styles.text}>Done! You won the game with {props.totalMoves} moves in {props.totalTime}.</p>
             <div>
                 <Button
                     btnClass='defaultButton'
@@ -48,19 +72,29 @@ const Summary = props => {
                     label={playAgain} 
                     text={playAgain} 
                     style={{}} 
-                    onClick={props.handleSelect} 
+                    onClick={onPlayAgain} 
                 />
             </div>
         </section>
     )
 }
-Summary.propTypes = {
-    handleSelect: PropTypes.func.isRequired,
+ConnectedSummary.propTypes = {
+    // handleSelect: PropTypes.func.isRequired,
+    toggleGameOver: PropTypes.func.isRequired,
+    resetCardState: PropTypes.func.isRequired,
     moves: PropTypes.number.isRequired,
     time: PropTypes.string.isRequired
 }
+const Summary = connect(mapStateToSummaryProps, mapDispatchToSummaryProps)(ConnectedSummary)
 
-class Message extends React.Component {
+
+
+const mapStateToMessageProps = state => {
+    return {
+        gameOver: state.gameState.gameOver
+    }
+}
+class ConnectedMessage extends React.Component {
     constructor(props) {
         super(props)
 
@@ -75,13 +109,13 @@ class Message extends React.Component {
     }
 
     render() {
-        const screen = this.props.gameState === 'start' ?
-            <Welcome /> :
+        const screen = this.props.gameOver ?
             <Summary 
-                moves={this.props.moves} 
-                time={this.props.time} 
+                // moves={this.props.moves} 
+                // time={this.props.time} 
                 handleSelect={this.restartGame} 
-            />
+            /> :
+            <Welcome />
         
         return (
             <article className={styles.screen}>
@@ -91,11 +125,12 @@ class Message extends React.Component {
         )
     }
 }
-Message.propTypes = {
-    gameState: PropTypes.string.isRequired,
-    // handleUserSelection: PropTypes.func.isRequired,
+ConnectedMessage.propTypes = {
+    // gameState: PropTypes.string.isRequired,
+    gameOver: PropTypes.bool.isRequired,
     moves: PropTypes.number,
     time: PropTypes.string
 }
+const Message = connect(mapStateToMessageProps)(ConnectedMessage)
 
 export default Message

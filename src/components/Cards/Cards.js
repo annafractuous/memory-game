@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { toggleGameActive, toggleGameOver } from '../../redux/actions/game-state'
 import { setPairsCount, selectPairingCard, selectCorrectCard, selectWrongCard, flipBack } from '../../redux/actions/cards'
+import { toggleGameActive, toggleGameOver } from '../../redux/actions/game-state'
+import { setTotalMoves } from '../../redux/actions/summary'
 import classNames from 'classnames'
 
 import gameStyles from '../../data/game-styles.js'
@@ -86,8 +87,9 @@ const mapDispatchToCardsProps = dispatch => {
         selectCorrectCard: card => dispatch(selectCorrectCard(card)),
         selectWrongCard: card => dispatch(selectWrongCard(card)),
         flipBack: wrongMoves => dispatch(flipBack(wrongMoves)),
-        toggleGameActive: value => dispatch(toggleGameActive(value)),
-        toggleGameOver: value => dispatch(toggleGameOver(value))
+        toggleGameActive: bool => dispatch(toggleGameActive(bool)),
+        toggleGameOver: bool => dispatch(toggleGameOver(bool)),
+        setTotalMoves: moves => dispatch(setTotalMoves(moves))
     }
 }
 class ConnectedCards extends React.Component {
@@ -155,7 +157,7 @@ class ConnectedCards extends React.Component {
     gameOver() {
         this.props.toggleGameActive(false)
         this.props.toggleGameOver(true)
-        this.props.setMoves(this.props.moves)
+        this.props.setTotalMoves(this.props.moves)
     }
 
     flipBack() {
@@ -198,7 +200,7 @@ class ConnectedCards extends React.Component {
 }
 ConnectedCards.propTypes = {
     cards: PropTypes.array.isRequired,
-    setMoves: PropTypes.func.isRequired
+    setTotalMoves: PropTypes.func.isRequired
 }
 const Cards = connect(mapStateToCardsProps, mapDispatchToCardsProps)(ConnectedCards)
 

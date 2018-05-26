@@ -10,6 +10,6 @@ export const selectBackground = selection => ({
     selection: selection
 })
 
-export const clearSelections = () => {
+export const clearSelections = () => ({
     type: CLEAR_SELECTIONS
-}
+})

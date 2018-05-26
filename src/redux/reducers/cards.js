@@ -3,7 +3,7 @@ import { SET_PAIRS_COUNT, SELECT_PAIRING_CARD, SELECT_CORRECT_CARD, SELECT_WRONG
 const initialState = {
     pairingCards: [],
     pairsMade: [],
-    pairsRemaining: 100,
+    pairsRemaining: null,
     moves: 0,
     wrongMoves: 0
 }
@@ -45,7 +45,11 @@ export const cardsReducer = (state = initialState, action) => {
         case RESET_CARD_STATE:
             return {
                 ...state,
-                initialState
+                pairingCards: [],
+                pairsMade: [],
+                pairsRemaining: null,
+                moves: 0,
+                wrongMoves: 0
             }
         default:
             return state

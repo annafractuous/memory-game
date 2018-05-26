@@ -1,6 +1,7 @@
 import { combineReducers } from "redux"
 import { gamestateReducer } from "./game-state"
 import { selectionReducer } from "./selection"
+import { summaryReducer } from "./summary"
 import { cardsReducer } from "./cards"
 
 // const initialState = {
@@ -40,6 +41,7 @@ import { cardsReducer } from "./cards"
 const rootReducer = combineReducers({
     gameState: gamestateReducer,
     selection: selectionReducer,
+    summary: summaryReducer,
     cards: cardsReducer
 })
 
