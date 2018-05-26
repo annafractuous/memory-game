@@ -1,4 +1,9 @@
-import { SET_PAIRS_COUNT, SELECT_PAIRING_CARD, SELECT_CORRECT_CARD, SELECT_WRONG_CARD, FLIP_BACK, RESET_CARD_STATE } from '../actions/action-types'
+import { TOGGLE_FIRST_CARD, SET_PAIRS_COUNT, SELECT_PAIRING_CARD, SELECT_CORRECT_CARD, SELECT_WRONG_CARD, FLIP_BACK, RESET_CARD_STATE } from '../actions/action-types'
+
+export const toggleFirstCard = bool => ({
+    type: TOGGLE_FIRST_CARD,
+    value: bool
+})
 
 export const setPairsCount = totalPairs => ({
     type: SET_PAIRS_COUNT,

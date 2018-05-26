@@ -1,6 +1,7 @@
-import { SET_PAIRS_COUNT, SELECT_PAIRING_CARD, SELECT_CORRECT_CARD, SELECT_WRONG_CARD, FLIP_BACK, RESET_CARD_STATE } from '../actions/action-types'
+import { TOGGLE_FIRST_CARD, SET_PAIRS_COUNT, SELECT_PAIRING_CARD, SELECT_CORRECT_CARD, SELECT_WRONG_CARD, FLIP_BACK, RESET_CARD_STATE } from '../actions/action-types'
 
 const initialState = {
+    firstCardFlipped: false,
     pairingCards: [],
     pairsMade: [],
     pairsRemaining: null,
@@ -10,6 +11,11 @@ const initialState = {
 
 export const cardsReducer = (state = initialState, action) => {
     switch (action.type) {
+        case TOGGLE_FIRST_CARD:
+            return {
+                ...state,
+                firstCardFlipped: action.value
+            }
         case SET_PAIRS_COUNT:
             return {
                 ...state,
@@ -45,6 +51,7 @@ export const cardsReducer = (state = initialState, action) => {
         case RESET_CARD_STATE:
             return {
                 ...state,
+                firstCardFlipped: false,
                 pairingCards: [],
                 pairsMade: [],
                 pairsRemaining: null,

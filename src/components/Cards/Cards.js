@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { setPairsCount, selectPairingCard, selectCorrectCard, selectWrongCard, flipBack } from '../../redux/actions/cards'
+import { toggleFirstCard, setPairsCount, selectPairingCard, selectCorrectCard, selectWrongCard, flipBack } from '../../redux/actions/cards'
 import { toggleGameActive, toggleGameOver } from '../../redux/actions/game-state'
 import { setTotalMoves } from '../../redux/actions/summary'
 import classNames from 'classnames'
@@ -73,6 +73,7 @@ const Card = connect(mapStateToCardProps)(ConnectedCard)
 
 const mapStateToCardsProps = state => {
     return {
+        firstCardFlipped: state.cards.firstCardFlipped,
         pairingCards: state.cards.pairingCards,
         pairsMade: state.cards.pairsMade,
         pairsRemaining: state.cards.pairsRemaining,
@@ -87,6 +88,7 @@ const mapDispatchToCardsProps = dispatch => {
         selectCorrectCard: card => dispatch(selectCorrectCard(card)),
         selectWrongCard: card => dispatch(selectWrongCard(card)),
         flipBack: wrongMoves => dispatch(flipBack(wrongMoves)),
+        toggleFirstCard: bool => dispatch(toggleFirstCard(bool)),
         toggleGameActive: bool => dispatch(toggleGameActive(bool)),
         toggleGameOver: bool => dispatch(toggleGameOver(bool)),
         setTotalMoves: moves => dispatch(setTotalMoves(moves))
@@ -95,9 +97,9 @@ const mapDispatchToCardsProps = dispatch => {
 class ConnectedCards extends React.Component {
     constructor(props) {
         super(props)
-		this.state = {
-            firstCard: true
-		}
+		// this.state = {
+        //     firstCard: true
+		// }
         this.shuffleCards()
 
         this.props.setPairsCount(this.props.cards.length / 2)
@@ -128,7 +130,7 @@ class ConnectedCards extends React.Component {
             value: value
         }
 
-        if (this.state.firstCard) {
+        if (!this.props.firstCardFlipped) {
             this.startGame(card)
         } else {
             this.props.pairingCards.length ? this.checkMatch(card) : this.props.selectPairingCard(card)
@@ -136,10 +138,11 @@ class ConnectedCards extends React.Component {
 	}
 
     startGame(card) {
-        this.setState({
-            firstCard: false
-        })
+        // this.setState({
+        //     firstCard: false
+        // })
         
+        this.props.toggleFirstCard(true)
         this.props.toggleGameActive(true)
         this.props.selectPairingCard(card)
     }
