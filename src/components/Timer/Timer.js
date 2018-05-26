@@ -1,24 +1,23 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+
 import { connect } from 'react-redux'
 import { setTotalTime } from '../../redux/actions/summary'
 
 import styles from './Timer.scss'
 
+
 const getHours = time => {
 	return Math.floor(time / 3600)
 }
-
 const getMins = (time, leadingZero) => {
 	const m = Math.floor((time % 3600) / 60)
 	return leadingZero && m < 10 ? `0${m}` : m
 }
-
 const getSecs = time => {
 	const s = time % 60
 	return s < 10 ? `0${s}` : s
 }
-
 export const formatTime = time => {
 	if (time < 0) return '--:--'
 	const h = getHours(time)
@@ -27,18 +26,18 @@ export const formatTime = time => {
 
 	return h > 0 ? `${h}:${m}:${s}` : `${m}:${s}`
 }
-
 const Timer = ({ time = 0 }) => <div className={styles.timer}>Time: {formatTime(time)}</div>
 Timer.propTypes = {
 	time: PropTypes.number,
 }
 
-const mapStateToTimerProps = state => {
+
+const mapStateToProps = state => {
     return {
         gameActive: state.gameState.gameActive
     }
 }
-const mapDispatchToTimerProps = dispatch => {
+const mapDispatchToProps = dispatch => {
     return {
         setTotalTime: time => dispatch(setTotalTime(time))
     }
@@ -74,9 +73,9 @@ class ConnectedTimerContainer extends React.Component {
 	}
 }
 ConnectedTimerContainer.propTypes = {
-	setTime: PropTypes.func.isRequired,
+	setTotalTime: PropTypes.func.isRequired,
 	gameActive: PropTypes.bool.isRequired
 }
-const TimerContainer = connect(mapStateToTimerProps, mapDispatchToTimerProps)(ConnectedTimerContainer)
+const TimerContainer = connect(mapStateToProps, mapDispatchToProps)(ConnectedTimerContainer)
 
 export default TimerContainer
