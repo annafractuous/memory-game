@@ -5,6 +5,7 @@ import { Button, ButtonGroup } from '../Buttons/Buttons'
 import { connect } from 'react-redux'
 import { resetCardState } from '../../redux/actions/cards'
 import { clearSelections } from '../../redux/actions/selection'
+import { clearTotals } from '../../redux/actions/summary'
 import { toggleGameOver } from '../../redux/actions/game-state'
 
 import styles from './Summary.scss'
@@ -20,6 +21,7 @@ const mapDispatchToProps = dispatch => {
     return {
         toggleGameOver: bool => dispatch(toggleGameOver(bool)),
         clearSelections: () => dispatch(clearSelections()),
+        clearTotals: () => dispatch(clearTotals()),
         resetCardState: () => dispatch(resetCardState())
     }
 }
@@ -28,6 +30,7 @@ const ConnectedSummary = props => {
         props.toggleGameOver(false)
         props.clearSelections()
         props.resetCardState()
+        props.clearTotals()
     }
 
     const playAgain = 'Play Again'
@@ -51,6 +54,7 @@ ConnectedSummary.propTypes = {
     toggleGameOver: PropTypes.func.isRequired,
     clearSelections: PropTypes.func.isRequired,
     resetCardState: PropTypes.func.isRequired,
+    clearTotals: PropTypes.func.isRequired,
     totalMoves: PropTypes.number.isRequired,
     totalTime: PropTypes.string.isRequired
 }
