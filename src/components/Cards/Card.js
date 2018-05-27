@@ -13,51 +13,44 @@ const mapStateToProps = state => {
         background: state.selection.background
     }
 }
-class ConnectedCard extends React.Component {
-    constructor(props) {
-        super(props)
-
-		this.handleClick = this.handleClick.bind(this)
-    }
-
-	handleClick() {
-		this.props.handleClick(this.props.value, this.props.idx)
+const ConnectedCard = props => {
+    const handleClick = () => {
+		props.handleClick(props.value, props.idx)
 	}
 
-    getCardStyles() {
-        const extraStyles = gameStyles[this.props.background].extraStyles
-        const extraBackStyles = extraStyles && extraStyles.back ? extraStyles.back : {}
+    const getCardStyles = () => {
+        const extraStyles      = gameStyles[props.background].extraStyles
+        const extraBackStyles  = extraStyles && extraStyles.back ? extraStyles.back : {}
         const extraFrontStyles = extraStyles && extraStyles.front ? extraStyles.front : {}
         
         const backStyle = Object.assign({
-            backgroundImage: `url(${gameStyles[this.props.background].img})`
+            backgroundImage: `url(${gameStyles[props.background].img})`
         }, extraBackStyles)
+        
         const frontStyle = Object.assign({
-            backgroundColor: gameStyles[this.props.background].cardColor
+            backgroundColor: gameStyles[props.background].cardColor
         }, extraFrontStyles)
 
         return [backStyle, frontStyle]
     }
 
-	render() {
-        const [backStyle, frontStyle] = this.getCardStyles()
-		const cardClass = classNames([styles.cardContainer], {
-            [styles.active]: this.props.active,
-            [styles.flipped]: this.props.flipped
-        })
-        const disabled = this.props.flipped || !this.props.active
+	const [backStyle, frontStyle] = getCardStyles()
+    const cardClass = classNames([styles.cardContainer], {
+        [styles.active]: props.active,
+        [styles.flipped]: props.flipped
+    })
+    const disabled = props.flipped || !props.active
 
-		return (
-			<div className={cardClass} onClick={this.handleClick}>
-                <div className={styles.card}>
-                    <button className={styles.front} style={frontStyle} aria-label={this.props.value} disabled={disabled}>
-                        {this.props.value}
-                    </button>
-                    <div className={styles.back} style={backStyle}></div>
-                </div>
+    return (
+        <div className={cardClass} onClick={handleClick}>
+            <div className={styles.card}>
+                <button className={styles.front} style={frontStyle} aria-label={props.value} disabled={disabled}>
+                    {props.value}
+                </button>
+                <div className={styles.back} style={backStyle}></div>
             </div>
-		)
-	}
+        </div>
+    )
 }
 ConnectedCard.propTypes = {
     idx: PropTypes.number.isRequired,
