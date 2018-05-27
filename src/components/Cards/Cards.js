@@ -4,7 +4,7 @@ import Card from './Card'
 
 import { connect } from 'react-redux'
 import { toggleFirstCard, setPairsCount, selectPairingCard, selectCorrectCard, selectWrongCard, flipBack } from '../../redux/actions/cards'
-import { toggleGameActive, endGame } from '../../redux/actions/game-state'
+import { toggleGameActive, toggleDillyDali, endGame } from '../../redux/actions/game-state'
 import { setTotalMoves } from '../../redux/actions/summary'
 
 import classNames from 'classnames'
@@ -20,7 +20,8 @@ const mapStateToProps = state => {
         pairsMade: state.cards.pairsMade,
         pairsRemaining: state.cards.pairsRemaining,
         moves: state.cards.moves,
-        wrongMoves: state.cards.wrongMoves
+        wrongMoves: state.cards.wrongMoves,
+        dillyDali: state.gameState.dillyDali
     }
 }
 const mapDispatchToProps = dispatch => {
@@ -30,6 +31,7 @@ const mapDispatchToProps = dispatch => {
         selectCorrectCard: card => dispatch(selectCorrectCard(card)),
         selectWrongCard: card => dispatch(selectWrongCard(card)),
         flipBack: wrongMoves => dispatch(flipBack(wrongMoves)),
+        toggleDillyDali: bool => dispatch(toggleDillyDali(bool)),
         toggleFirstCard: bool => dispatch(toggleFirstCard(bool)),
         toggleGameActive: bool => dispatch(toggleGameActive(bool)),
         setTotalMoves: moves => dispatch(setTotalMoves(moves)),
@@ -104,7 +106,7 @@ class ConnectedCards extends React.Component {
             this.props.flipBack()
 
             if (this.props.wrongMoves > 4) {
-                this.props.dillyDali()
+                this.dillyDali()
             } else if (!this.props.pairsRemaining) {
                 this.gameOver()
             }
@@ -113,12 +115,23 @@ class ConnectedCards extends React.Component {
         }.bind(this), 500)
     }
 
+    dillyDali() {
+        this.props.toggleDillyDali(true)
+        const daliOut = setTimeout(() => {
+            clearTimeout(daliOut)
+            this.props.toggleDillyDali(false)
+        }, 3000)
+    }
+
 	render() {
         const countClass = `count${this.cards.length}`
-		const containerClass = classNames([styles.cardsContainer], [styles[countClass]])
+		const containerClass = classNames([styles.cardsContainer], [styles[countClass]], {
+            [styles.dillyDali]: this.props.dillyDali 
+        })
 
         return (
 			<div className={containerClass}>
+                <div className={styles.dali}></div>
 				{this.cards.map((card, i) => {
                     const active = !this.props.pairsMade.includes(card)
 					const flipped = !!this.props.pairingCards.find((c) => c.idx === i)
@@ -146,7 +159,17 @@ ConnectedCards.propTypes = {
     pairsRemaining: PropTypes.number,
     moves: PropTypes.number.isRequired,
     wrongMoves: PropTypes.number.isRequired,
-    dillyDali: PropTypes.func.isRequired
+    dillyDali: PropTypes.bool.isRequired,
+    setPairsCount: PropTypes.func.isRequired,
+    selectPairingCard: PropTypes.func.isRequired,
+    selectCorrectCard: PropTypes.func.isRequired,
+    selectWrongCard: PropTypes.func.isRequired,
+    flipBack: PropTypes.func.isRequired,
+    toggleDillyDali: PropTypes.func.isRequired,
+    toggleFirstCard: PropTypes.func.isRequired,
+    toggleGameActive: PropTypes.func.isRequired,
+    setTotalMoves: PropTypes.func.isRequired,
+    endGame: PropTypes.func.isRequired
 }
 const Cards = connect(mapStateToProps, mapDispatchToProps)(ConnectedCards)
 
