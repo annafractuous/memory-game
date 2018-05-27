@@ -28,7 +28,7 @@ const mapDispatchToProps = dispatch => {
         toggleShowGame: bool => dispatch(toggleShowGame(bool))
     }
 }
-class ConnectedApp extends React.Component {
+class App extends React.Component {
 	constructor(props) {
 		super(props)
 	}
@@ -84,7 +84,7 @@ class ConnectedApp extends React.Component {
         )
 	}
 }
-ConnectedApp.propTypes = {
+App.propTypes = {
     showGame: PropTypes.bool.isRequired,
     gameOver: PropTypes.bool.isRequired,
     difficulty: PropTypes.string.isRequired,
@@ -95,6 +95,6 @@ ConnectedApp.propTypes = {
     setCards: PropTypes.func.isRequired,
     toggleShowGame: PropTypes.func.isRequired
 }
-const App = connect(mapStateToProps, mapDispatchToProps)(ConnectedApp)
+const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App)
 
-export default App
+export default ConnectedApp

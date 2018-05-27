@@ -14,7 +14,7 @@ const mapStateToProps = state => {
         gameOver: state.gameState.gameOver
     }
 }
-const ConnectedMessage = props => {
+const Message = props => {
     const screen = props.gameOver ? <Summary /> : <Welcome />        
     return (
         <article className={styles.screen}>
@@ -23,9 +23,9 @@ const ConnectedMessage = props => {
         </article>
     )
 }
-ConnectedMessage.propTypes = {
+Message.propTypes = {
     gameOver: PropTypes.bool.isRequired
 }
-const Message = connect(mapStateToProps)(ConnectedMessage)
+const ConnectedMessage = connect(mapStateToProps)(Message)
 
-export default Message
+export default ConnectedMessage

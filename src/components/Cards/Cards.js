@@ -38,7 +38,7 @@ const mapDispatchToProps = dispatch => {
         endGame: () => dispatch(endGame()),
     }
 }
-class ConnectedCards extends React.Component {
+class Cards extends React.Component {
     constructor(props) {
         super(props)
         
@@ -150,7 +150,7 @@ class ConnectedCards extends React.Component {
 		)
 	}
 }
-ConnectedCards.propTypes = {
+Cards.propTypes = {
     cards: PropTypes.object.isRequired,
     difficulty: PropTypes.string.isRequired,
     firstCardFlipped: PropTypes.bool.isRequired,
@@ -171,6 +171,6 @@ ConnectedCards.propTypes = {
     setTotalMoves: PropTypes.func.isRequired,
     endGame: PropTypes.func.isRequired
 }
-const Cards = connect(mapStateToProps, mapDispatchToProps)(ConnectedCards)
+const ConnectedCards = connect(mapStateToProps, mapDispatchToProps)(Cards)
 
-export default Cards
+export default ConnectedCards

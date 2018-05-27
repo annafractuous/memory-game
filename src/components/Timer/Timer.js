@@ -26,8 +26,8 @@ export const formatTime = time => {
 
 	return h > 0 ? `${h}:${m}:${s}` : `${m}:${s}`
 }
-const Timer = ({ time = 0 }) => <div className={styles.timer}>Time: {formatTime(time)}</div>
-Timer.propTypes = {
+const TimerFunction = ({ time = 0 }) => <div className={styles.timer}>Time: {formatTime(time)}</div>
+TimerFunction.propTypes = {
 	time: PropTypes.number,
 }
 
@@ -42,7 +42,7 @@ const mapDispatchToProps = dispatch => {
         setTotalTime: time => dispatch(setTotalTime(time))
     }
 }
-class ConnectedTimerContainer extends React.Component {
+class TimerContainer extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -69,13 +69,13 @@ class ConnectedTimerContainer extends React.Component {
 	}
 
 	render() {
-		return <Timer time={this.state.secondsElapsed} />
+		return <TimerFunction time={this.state.secondsElapsed} />
 	}
 }
-ConnectedTimerContainer.propTypes = {
+TimerContainer.propTypes = {
 	setTotalTime: PropTypes.func.isRequired,
 	gameActive: PropTypes.bool.isRequired
 }
-const TimerContainer = connect(mapStateToProps, mapDispatchToProps)(ConnectedTimerContainer)
+const ConnectedTimerContainer = connect(mapStateToProps, mapDispatchToProps)(TimerContainer)
 
-export default TimerContainer
+export default ConnectedTimerContainer

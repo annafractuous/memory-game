@@ -25,7 +25,7 @@ const mapDispatchToProps = dispatch => {
         resetCardState: () => dispatch(resetCardState())
     }
 }
-const ConnectedSummary = props => {
+const Summary = props => {
     const onPlayAgain = () => {
         props.toggleGameOver(false)
         props.clearSelections()
@@ -50,7 +50,7 @@ const ConnectedSummary = props => {
         </section>
     )
 }
-ConnectedSummary.propTypes = {
+Summary.propTypes = {
     toggleGameOver: PropTypes.func.isRequired,
     clearSelections: PropTypes.func.isRequired,
     resetCardState: PropTypes.func.isRequired,
@@ -58,6 +58,6 @@ ConnectedSummary.propTypes = {
     totalMoves: PropTypes.number.isRequired,
     totalTime: PropTypes.string.isRequired
 }
-const Summary = connect(mapStateToProps, mapDispatchToProps)(ConnectedSummary)
+const ConnectedSummary = connect(mapStateToProps, mapDispatchToProps)(Summary)
 
-export default Summary
+export default ConnectedSummary

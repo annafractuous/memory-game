@@ -13,7 +13,7 @@ const mapStateToProps = state => {
         background: state.selection.background
     }
 }
-const ConnectedCard = props => {
+const Card = props => {
     const handleClick = () => {
 		props.handleClick(props.value, props.idx)
 	}
@@ -52,7 +52,7 @@ const ConnectedCard = props => {
         </div>
     )
 }
-ConnectedCard.propTypes = {
+Card.propTypes = {
     idx: PropTypes.number.isRequired,
     value: PropTypes.string.isRequired,
     active: PropTypes.bool.isRequired,
@@ -60,6 +60,6 @@ ConnectedCard.propTypes = {
     background: PropTypes.string.isRequired,
     handleClick: PropTypes.func.isRequired
 }
-const Card = connect(mapStateToProps)(ConnectedCard)
+const ConnectedCard = connect(mapStateToProps)(Card)
 
-export default Card
+export default ConnectedCard

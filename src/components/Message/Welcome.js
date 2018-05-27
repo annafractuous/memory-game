@@ -14,7 +14,7 @@ const mapDispatchToProps = dispatch => {
         selectBackground: selection => dispatch(selectBackground(selection))
     }
 }
-const ConnectedWelcome = props => {
+const Welcome = props => {
     return (
         <section>
             <ButtonGroup 
@@ -31,10 +31,10 @@ const ConnectedWelcome = props => {
         </section>
     )
 }
-ConnectedWelcome.propTypes = {
+Welcome.propTypes = {
     selectDifficulty: PropTypes.func.isRequired,
     selectBackground: PropTypes.func.isRequired
 }
-const Welcome = connect(null, mapDispatchToProps)(ConnectedWelcome)
+const ConnectedWelcome = connect(null, mapDispatchToProps)(Welcome)
 
-export default Welcome
+export default ConnectedWelcome

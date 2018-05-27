@@ -9,7 +9,7 @@ const mapStateToProps = state => {
         cardsLoaded: state.gameState.cardsLoaded
     }
 }
-const ConnectedGameDisplay = props => {
+const GameDisplay = props => {
     switch (props.cardsLoaded) {
         case 'false':
 	    	return 'Loading...'
@@ -18,9 +18,9 @@ const ConnectedGameDisplay = props => {
 		    return "We've encountered an error. Please try again later!"
     }
 }
-ConnectedGameDisplay.propTypes = {
+GameDisplay.propTypes = {
     cardsLoaded: PropTypes.string.isRequired
 }
-const GameDisplay = connect(mapStateToProps)(ConnectedGameDisplay)
+const ConnectedGameDisplay = connect(mapStateToProps)(GameDisplay)
 
-export default GameDisplay
+export default ConnectedGameDisplay

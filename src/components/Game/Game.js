@@ -15,7 +15,7 @@ const mapStateToProps = state => {
         cardsLoaded: state.gameState.cardsLoaded
     }
 }
-const ConnectedGame = props => {
+const Game = props => {
     const component = props.cardsLoaded === 'true' ? <GamePlay /> : <GameDisplay />
     return (
         <article className={styles.gameContainer}>
@@ -24,9 +24,9 @@ const ConnectedGame = props => {
         </article>
     )
 }
-ConnectedGame.propTypes = {
+Game.propTypes = {
     cardsLoaded: PropTypes.string.isRequired
 }
-const Game = connect(mapStateToProps)(ConnectedGame)
+const ConnectedGame = connect(mapStateToProps)(Game)
 
-export default Game
+export default ConnectedGame
