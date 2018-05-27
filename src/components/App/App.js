@@ -4,7 +4,7 @@ import Message from '../Message/Message'
 import Game from '../Game/Game'
 
 import { connect } from 'react-redux'
-import { toggleShowGame } from '../../redux/actions/game-state'
+import { cardsLoadingState, setCards, toggleShowGame } from '../../redux/actions/game-state'
 // import store from '../../redux/store/index'
 
 import gameStyles from '../../data/game-styles.js'
@@ -23,6 +23,8 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
     return {
+        cardsLoadingState: value => dispatch(cardsLoadingState(value)),
+        setCards: cards => dispatch(setCards(cards)),
         toggleShowGame: bool => dispatch(toggleShowGame(bool))
     }
 }
@@ -31,9 +33,32 @@ class ConnectedApp extends React.Component {
 		super(props)
 	}
 
+	componentDidMount() {
+		const cardsJSON = 'https://web-code-test-dot-nyt-games-prd.appspot.com/cards.json'
+		fetch(cardsJSON)
+			.then(response => response.json())
+			.then(data => this.setCards(data))
+			.catch(error => this.handleError(error))
+	}
+
     componentWillReceiveProps(nextProps) {
         this.showGameCheck(nextProps)
     }
+
+	handleError(error) {
+		console.log(error)
+        this.props.cardsLoadingState('error')
+	}
+
+	setCards(data) {
+		const cards = {}
+		for (let set of data.levels) {
+			cards[set.difficulty] = set.cards
+		}
+        
+        this.props.cardsLoadingState('true')
+        this.props.setCards(cards)
+	}
 
     showGameCheck(nextProps) {
         if (!nextProps.gameOver && nextProps.background !== '' && nextProps.difficulty !== '') {
@@ -45,7 +70,7 @@ class ConnectedApp extends React.Component {
     }
 
 	render() {
-        // window.store = store;
+        // window.store = store
         const bgColor = this.props.showGame ? gameStyles[this.props.background].pageColor : 'white'
         const style = {
             backgroundColor: bgColor
@@ -66,6 +91,8 @@ ConnectedApp.propTypes = {
     background: PropTypes.string.isRequired,
     totalTime: PropTypes.string.isRequired,
     totalMoves: PropTypes.number.isRequired,
+    cardsLoadingState: PropTypes.func.isRequired,
+    setCards: PropTypes.func.isRequired,
     toggleShowGame: PropTypes.func.isRequired
 }
 const App = connect(mapStateToProps, mapDispatchToProps)(ConnectedApp)

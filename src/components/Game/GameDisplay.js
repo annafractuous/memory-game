@@ -1,7 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const GameDisplay = props => {
+import { connect } from 'react-redux'
+
+
+const mapStateToProps = state => {
+    return {
+        cardsLoaded: state.gameState.cardsLoaded
+    }
+}
+const ConnectedGameDisplay = props => {
     switch (props.cardsLoaded) {
         case 'false':
 	    	return 'Loading...'
@@ -10,8 +18,9 @@ const GameDisplay = props => {
 		    return "We've encountered an error. Please try again later!"
     }
 }
-GameDisplay.propTypes = {
+ConnectedGameDisplay.propTypes = {
     cardsLoaded: PropTypes.string.isRequired
 }
+const GameDisplay = connect(mapStateToProps)(ConnectedGameDisplay)
 
 export default GameDisplay

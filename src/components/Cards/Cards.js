@@ -4,7 +4,7 @@ import Card from './Card'
 
 import { connect } from 'react-redux'
 import { toggleFirstCard, setPairsCount, selectPairingCard, selectCorrectCard, selectWrongCard, flipBack } from '../../redux/actions/cards'
-import { toggleGameActive, toggleGameOver } from '../../redux/actions/game-state'
+import { toggleGameActive, endGame } from '../../redux/actions/game-state'
 import { setTotalMoves } from '../../redux/actions/summary'
 
 import classNames from 'classnames'
@@ -13,6 +13,8 @@ import styles from './Cards.scss'
 
 const mapStateToProps = state => {
     return {
+        cards: state.gameState.cards,
+        difficulty: state.selection.difficulty,
         firstCardFlipped: state.cards.firstCardFlipped,
         pairingCards: state.cards.pairingCards,
         pairsMade: state.cards.pairsMade,
@@ -30,8 +32,8 @@ const mapDispatchToProps = dispatch => {
         flipBack: wrongMoves => dispatch(flipBack(wrongMoves)),
         toggleFirstCard: bool => dispatch(toggleFirstCard(bool)),
         toggleGameActive: bool => dispatch(toggleGameActive(bool)),
-        toggleGameOver: bool => dispatch(toggleGameOver(bool)),
-        setTotalMoves: moves => dispatch(setTotalMoves(moves))
+        setTotalMoves: moves => dispatch(setTotalMoves(moves)),
+        endGame: () => dispatch(endGame()),
     }
 }
 class ConnectedCards extends React.Component {
@@ -39,7 +41,7 @@ class ConnectedCards extends React.Component {
         super(props)
         
         this.shuffleCards()
-        this.props.setPairsCount(this.props.cards.length / 2)
+        this.props.setPairsCount(this.cards.length / 2)
 		
         this.handleClick = this.handleClick.bind(this)
 
@@ -47,7 +49,7 @@ class ConnectedCards extends React.Component {
 
 	shuffleCards() {
 		// Fisher-Yates shuffle
-		const cards = this.props.cards
+		const cards = [...this.props.cards[this.props.difficulty]]
 		let counter = cards.length
 		let temp, randomIdx
 
@@ -59,6 +61,8 @@ class ConnectedCards extends React.Component {
 			cards[counter] = cards[randomIdx]
 			cards[randomIdx] = temp
 		}
+
+        this.cards = cards
 	}
 
 	handleClick(value, idx) {
@@ -91,8 +95,7 @@ class ConnectedCards extends React.Component {
     }
 
     gameOver() {
-        this.props.toggleGameActive(false)
-        this.props.toggleGameOver(true)
+        this.props.endGame()
         this.props.setTotalMoves(this.props.moves)
     }
 
@@ -111,12 +114,12 @@ class ConnectedCards extends React.Component {
     }
 
 	render() {
-        const countClass = `count${this.props.cards.length}`
+        const countClass = `count${this.cards.length}`
 		const containerClass = classNames([styles.cardsContainer], [styles[countClass]])
 
         return (
 			<div className={containerClass}>
-				{this.props.cards.map((card, i) => {
+				{this.cards.map((card, i) => {
                     const active = !this.props.pairsMade.includes(card)
 					const flipped = !!this.props.pairingCards.find((c) => c.idx === i)
 					return (
@@ -135,7 +138,8 @@ class ConnectedCards extends React.Component {
 	}
 }
 ConnectedCards.propTypes = {
-    cards: PropTypes.array.isRequired,
+    cards: PropTypes.object.isRequired,
+    difficulty: PropTypes.string.isRequired,
     firstCardFlipped: PropTypes.bool.isRequired,
     pairingCards: PropTypes.array.isRequired,
     pairsMade: PropTypes.array.isRequired,

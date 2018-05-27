@@ -6,9 +6,9 @@ import { cardsReducer } from "./cards"
 
 // const initialState = {
 //     gameState: {
-//         showGame: false,        // gamePlay in App
-//         gameActive: false,      // use in Timer
-//         gameOver: false         // currently gameState ('start' or 'complete'), use in Message
+//         showGame: false,
+//         gameActive: false,
+//         gameOver: false
 //     },
 //     selection: {
 //         difficulty: '',

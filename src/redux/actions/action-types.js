@@ -3,6 +3,9 @@ export const TOGGLE_SHOW_GAME    = 'TOGGLE_SHOW_GAME'
 export const TOGGLE_GAME_ACTIVE  = 'TOGGLE_GAME_ACTIVE'
 export const TOGGLE_GAME_OVER    = 'TOGGLE_GAME_OVER'
 export const END_GAME            = 'END_GAME'
+export const CARDS_LOADING_STATE = 'CARDS_LOADING_STATE'
+export const SET_CARDS           = 'SET_CARDS'
+export const TOGGLE_DILLY_DALI   = 'TOGGLE_DILLY_DALI'
 
 // Selection Actions
 export const SELECT_DIFFICULTY   = 'SELECT_DIFFICULTY'

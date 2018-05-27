@@ -39,16 +39,10 @@ class GamePlay extends React.Component {
             <section className={daliClass}>
                 <div className={styles.dali}></div>
                 <Timer />
-                <Cards 
-                    cards={this.props.cards} 
-                    dillyDali={this.dillyDali} 
-                />
+                <Cards dillyDali={this.dillyDali} />
             </section>
         )
     }
-}
-GamePlay.propTypes = {
-    cards: PropTypes.array.isRequired
 }
 
 export default GamePlay
