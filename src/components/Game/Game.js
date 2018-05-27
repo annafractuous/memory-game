@@ -15,20 +15,14 @@ const mapStateToProps = state => {
         cardsLoaded: state.gameState.cardsLoaded
     }
 }
-class ConnectedGame extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-
-	render() {
-        const component = this.props.cardsLoaded === 'true' ? <GamePlay /> : <GameDisplay />
-        return (
-            <article className={styles.gameContainer}>
-                <Header style='gamePlay' />
-                {component}
-            </article>
-        )
-	}
+const ConnectedGame = props => {
+    const component = props.cardsLoaded === 'true' ? <GamePlay /> : <GameDisplay />
+    return (
+        <article className={styles.gameContainer}>
+            <Header style='gamePlay' />
+            {component}
+        </article>
+    )
 }
 ConnectedGame.propTypes = {
     cardsLoaded: PropTypes.string.isRequired
